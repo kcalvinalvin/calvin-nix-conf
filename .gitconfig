@@ -1,0 +1,54 @@
+[user]
+	email = calvin@kcalvinalvin.info
+	name = Calvin Kim
+[color]
+	branch = always
+	diff = always
+	grep = always
+	interactive = always
+	pager = true
+	showbranch = auto
+	status = auto
+	ui = always
+
+[color "interactive"]
+	error = red bold
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow
+	frag = magenta
+	old = red
+	new = green
+	whitespace = white reverse
+
+[color "log"]
+	meta = yellow
+	frag = magenta
+	old = red
+	new = green
+	whitespace = white reverse
+
+[color "status"]
+	added = green
+	changed = yellow
+	untracked = cyan
+	branch = magenta
+[pager]
+	branch = false
+[merge]
+	tool = nfugitive
+[mergetool "nfugitive"]
+	cmd = nvim -f -c "Gdiff" "$MERGED"
+[diff]
+	tool = nvimdiff2
+	pager = nvim
+[difftool "nvimdiff2"]
+	cmd = nvim -d $LOCAL $REMOTE
+[core]
+	editor = nvim
+	pager = less -R

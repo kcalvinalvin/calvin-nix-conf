@@ -17,6 +17,12 @@
     environment.systemPackages = [
       pkgs.chromium
       pkgs.mosh
+      pkgs.git
+      pkgs.tmux
+      pkgs.tree
+      pkgs.python
+      pkgs.gcc
+      pkgs.vim
     ];
     
     i18n.inputMethod = {

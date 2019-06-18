@@ -38,11 +38,11 @@
     hardware.pulseaudio.enable = true;
     
     services.xserver.enable = true;
-    services.xserver.windowManager.i3.enable = true;
+    services.xserver.desktopManager.xfce.enable = true;
     
     users.users.username = { #choose a username
       isNormalUser = true;
-      extraGroups = [ "wheel", "networkmanager" ];
+      extraGroups = [ "wheel, networkmanager" ];
       passwd = "psswd"; #Choose a password
     };
     system.stateVersion = "19.03";

@@ -5,6 +5,7 @@ stdenv.mkDerivation {
   src = fetchFromGithub {
     owner = "hugegreenbug";
     repo = "xf86-input-cmt";
+    }
   }
   phases = "installPhase";
 

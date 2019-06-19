@@ -15,7 +15,7 @@
     nixpkgs.config.allowUnfree = true;
     
     environment.systemPackages = [
-      pkgs.chromium
+      pkgs.firefox
       pkgs.mosh
       pkgs.git
       pkgs.tmux

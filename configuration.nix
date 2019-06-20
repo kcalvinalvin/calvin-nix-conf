@@ -10,7 +10,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   
   networking.hostName = "bitcoin";
-  networking.wireless.enable = true;
   networking.networkmanager.enable = true;
   #allow shit programs
   nixpkgs.config.allowUnfree = true;

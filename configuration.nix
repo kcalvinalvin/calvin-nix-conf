@@ -9,7 +9,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
-  networking.hostname = "bitcoin";
+  networking.hostName = "bitcoin";
   networking.wireless.enable = true;
   #allow shit programs
   nixpkgs.config.allowUnfree = true;
@@ -29,8 +29,8 @@
     blueman
     gnupg
     jsoncpp
-	#needed for the window manager
-	rofi
+    #needed for the window manager
+    rofi
     xorg.xbacklight
     lm_sensors
     jq
@@ -70,3 +70,5 @@
     extraGroups = [ "wheel, networkmanager" ];
   };
   system.stateVersion = "19.03";
+
+}

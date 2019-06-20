@@ -27,6 +27,7 @@
     gnumake
     unzip
     blueman
+    networkmanager
     gnupg
     jsoncpp
     #needed for the window manager

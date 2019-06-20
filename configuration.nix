@@ -59,7 +59,7 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.windowManager.awesome = {
     enable = true;
-  }
+  };
     
   #TODO add chromeos driver
   services.xserver.libinput.enable = true;

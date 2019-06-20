@@ -57,7 +57,7 @@
   hardware.pulseaudio.enable = true;
     
   services.xserver.enable = true;
-  services.xserver.desktopManager.windowManager.awesome = {
+  services.xserver.windowManager.awesome = {
     enable = true;
   };
     

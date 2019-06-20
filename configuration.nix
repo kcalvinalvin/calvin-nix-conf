@@ -9,8 +9,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
-  networking.hostname = "bitcoin";
-  networking.wireless.enable = true;
+  networking.hostName = "bitcoin";
+  networking.networkmanager.enable = true;
   #allow shit programs
   nixpkgs.config.allowUnfree = true;
     
@@ -27,10 +27,11 @@
     gnumake
     unzip
     blueman
+    networkmanager
     gnupg
     jsoncpp
-	#needed for the window manager
-	rofi
+    #needed for the window manager
+    rofi
     xorg.xbacklight
     lm_sensors
     jq
@@ -57,9 +58,9 @@
   hardware.pulseaudio.enable = true;
     
   services.xserver.enable = true;
-  services.xserver.desktopManager.windowManager.awesome = {
+  services.xserver.windowManager.awesome = {
     enable = true;
-  }
+  };
     
   #TODO add chromeos driver
   services.xserver.libinput.enable = true;
@@ -70,3 +71,5 @@
     extraGroups = [ "wheel, networkmanager" ];
   };
   system.stateVersion = "19.03";
+
+}

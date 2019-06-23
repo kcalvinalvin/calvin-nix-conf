@@ -30,13 +30,6 @@
     networkmanager
     gnupg
     jsoncpp
-    #needed for the window manager
-    rofi
-    xorg.xbacklight
-    lm_sensors
-    jq
-    maim
-    i3lock
   ];
     
   #Locale
@@ -58,7 +51,7 @@
   hardware.pulseaudio.enable = true;
     
   services.xserver.enable = true;
-  services.xserver.windowManager.awesome = {
+  services.xserver.desktopManager.plasma5 = {
     enable = true;
   };
     

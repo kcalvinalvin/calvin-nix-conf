@@ -8,7 +8,12 @@ in
 
 {
   options.hardware.samus.cmt = {
-      enable = mkEnableOption "Use Chrome Multitouch input (cmt)";
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Use Chrome Multitouch input (cmt)
+        '';
     };
 
   config = lib.mkIf cfg.enable {

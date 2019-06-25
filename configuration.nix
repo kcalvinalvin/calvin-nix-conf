@@ -30,8 +30,15 @@
     networkmanager
     gnupg
     jsoncpp
+    #custom packages
+    libevdevc
+    xf86-input-cmt
   ];
-    
+  nixpkgs.config.packageOverrides = super: {
+    libevdevc = pkgs.callPackage ./pkgs/libevdevc {};
+    xf86-input-cmt = pkgs.callPackage ./pkgs/xf86-input-cmt {};
+  };
+
   #Locale
   i18n = {
     consoleFont = "Lat2-Terminus16";

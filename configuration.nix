@@ -31,10 +31,12 @@
     gnupg
     jsoncpp
     #custom packages
+    libgestures
     libevdevc
     xf86-input-cmt
   ];
   nixpkgs.config.packageOverrides = super: {
+    libgestures = pkgs.callPackage ./pkgs/libgestures {};
     libevdevc = pkgs.callPackage ./pkgs/libevdevc {};
     xf86-input-cmt = pkgs.callPackage ./pkgs/xf86-input-cmt {};
   };

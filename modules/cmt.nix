@@ -2,7 +2,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config.hardware.calvin.cmt;
+  cfg = config.hardware.samus.cmt;
 in
 
 with lib;

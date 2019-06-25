@@ -65,7 +65,7 @@
     enable = true;
     xkbModel = "chromebook";
     dpi = 192;
-  }
+  };
   services.xserver.desktopManager.xfce = {
     enable = true;
   };

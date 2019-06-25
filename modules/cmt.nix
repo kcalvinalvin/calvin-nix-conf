@@ -16,8 +16,7 @@ with lib;
   config = lib.mkIf cfg.enable {
     services.xserver.modules = [ pkgs.xf86-input-cmt ];
 
-    # 39 is before 40-libinput
-    environment.etc."X11/xorg.conf.d/39-touchpad-cmt.conf".source =
+    environment.etc."X11/xorg.conf.d/40-touchpad-cmt.conf".source =
       "${pkgs.chromium-xorg-conf}/40-touchpad-cmt.conf";
 
     environment.etc."X11/xorg.conf.d/50-touchpad-cmt-samus.conf".source =

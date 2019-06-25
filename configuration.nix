@@ -64,6 +64,8 @@
   
   services.xserver = {
     enable = true;
+    dpi = 192;
+    xkbModel = "chromebook";
   };
   services.xserver.desktopManager.xfce = {
     enable = true;

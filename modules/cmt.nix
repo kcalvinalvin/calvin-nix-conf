@@ -13,7 +13,7 @@ with lib;
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.xserver.modules = [ pkgs.xf86-input-cmt ];
 
     # 39 is before 40-libinput

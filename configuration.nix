@@ -68,7 +68,7 @@
   users.users.calvin = { #choose a username
     isNormalUser = true;
     home = "/home/calvin";
-    extraGroups = [ "wheel, networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" ];
   };
   system.stateVersion = "19.03";
 

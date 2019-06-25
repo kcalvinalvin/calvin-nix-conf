@@ -5,6 +5,7 @@
     [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules
+    ./pkgs
     ];
     
   boot.loader.systemd-boot.enable = true;

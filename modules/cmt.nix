@@ -7,11 +7,9 @@ in
 with lib;
 
 {
-  options = {
-    hardware.samus.cmt = {
+  options.hardware.samus.cmt = {
       enable = mkEnableOption "Use Chrome Multitouch input (cmt)";
     };
-  };
 
   config = lib.mkIf cfg.enable {
     services.xserver.modules = [ pkgs.xf86-input-cmt ];

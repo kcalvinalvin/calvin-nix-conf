@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
 
+with lib;
+
 let
   cfg = config.hardware.samus.cmt;
 in
-
-with lib;
 
 {
   options.hardware.samus.cmt = {

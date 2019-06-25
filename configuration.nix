@@ -59,8 +59,13 @@
   #audio
   sound.enable = true;
   hardware.pulseaudio.enable = true;
-    
-  services.xserver.enable = true;
+  hardware.samus.cmt.enable = true;
+  
+  services.xserver = {
+    enable = true;
+    xkbModel = "chromebook";
+    dpi = 192;
+  }
   services.xserver.desktopManager.xfce = {
     enable = true;
   };

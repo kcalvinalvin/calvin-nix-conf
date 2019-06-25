@@ -64,9 +64,6 @@
     enable = true;
   };
     
-  #TODO add chromeos driver
-  services.xserver.libinput.enable = true;
-    
   users.users.calvin = { #choose a username
     isNormalUser = true;
     home = "/home/calvin";

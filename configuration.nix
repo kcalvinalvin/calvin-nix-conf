@@ -12,9 +12,29 @@
   
   networking.hostName = "bitcoin";
   networking.networkmanager.enable = true;
-  #allow shit programs
-  nixpkgs.config.allowUnfree = true;
-    
+
+ # Configure the Nix package manager
+  nixpkgs = {
+    config.allowUnfree = true;
+    # To use the pinned channel, the original package set is thrown
+    # away in the overrides:
+    config.packageOverrides = oldPkgs: stable // {
+      # Store whole unstable channel in case that other modules need
+      # it (see emacs.nix for example):
+      inherit unstable;
+
+      # Backport Exa from unstable until a fix for the Rust builder is
+      # backported.
+      #
+      # https://github.com/NixOS/nixpkgs/pull/48020
+      exa = unstable.exa;
+
+      libgestures = import ./pkgs/libgestures;
+      libevdevc = import ./pkgs/libevdevc;
+      xf86-input-cmnt = import ./pkgs/xf86-input-cmt;
+      chromium-xorg-conf = import ./pkgs/chromium-xorg-conf;
+    };
+  }; 
   environment.systemPackages = with pkgs; [
     firefox
     mosh
@@ -36,11 +56,6 @@
     libevdevc
     xf86-input-cmt
   ];
-  nixpkgs.config.packageOverrides = super: {
-    libgestures = pkgs.callPackage ./pkgs/libgestures {};
-    libevdevc = pkgs.callPackage ./pkgs/libevdevc {};
-    xf86-input-cmt = pkgs.callPackage ./pkgs/xf86-input-cmt {};
-  };
 
   #Locale
   i18n = {

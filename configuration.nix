@@ -16,19 +16,7 @@
  # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
-    # To use the pinned channel, the original package set is thrown
-    # away in the overrides:
-    config.packageOverrides = oldPkgs: stable // {
-      # Store whole unstable channel in case that other modules need
-      # it (see emacs.nix for example):
-      inherit unstable;
-
-      # Backport Exa from unstable until a fix for the Rust builder is
-      # backported.
-      #
-      # https://github.com/NixOS/nixpkgs/pull/48020
-      exa = unstable.exa;
-
+    config.packageOverrides =  {
       libgestures = import ./pkgs/libgestures;
       libevdevc = import ./pkgs/libevdevc;
       xf86-input-cmnt = import ./pkgs/xf86-input-cmt;

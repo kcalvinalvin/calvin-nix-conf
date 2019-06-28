@@ -50,7 +50,6 @@
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
-    gnomeExtensions.caffeine
     xorg.xbacklight
     xinput_calibrator
     xdotool #dependency for libinput-gestures

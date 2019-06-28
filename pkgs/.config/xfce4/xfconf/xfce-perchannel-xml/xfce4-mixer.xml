@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-mixer" version="1.0">
+  <property name="sound-card" type="string" value="bdwrt5677Alsamixer"/>
+  <property name="sound-cards" type="empty">
+    <property name="HDAIntelHDMIAlsamixer" type="array">
+      <value type="string" value="IEC958"/>
+      <value type="string" value="IEC958 1 (1)"/>
+      <value type="string" value="IEC958 2 (2)"/>
+      <value type="string" value="IEC958 3 (3)"/>
+      <value type="string" value="IEC958 4 (4)"/>
+    </property>
+    <property name="PlaybackBuiltinAudioStereoPulseAudioMixer" type="array">
+      <value type="string" value="Master"/>
+    </property>
+    <property name="bdwrt5677Alsamixer" type="array">
+      <value type="string" value="Stereo4 DMIC Mux"/>
+      <value type="string" value="Stereo3 DMIC Mux"/>
+      <value type="string" value="Stereo2 DMIC Mux"/>
+      <value type="string" value="Stereo1 DMIC Mux"/>
+      <value type="string" value="Remote DMICs"/>
+      <value type="string" value="Local DMICs"/>
+      <value type="string" value="Headset Mic"/>
+      <value type="string" value="Mono DMIC R Mux"/>
+      <value type="string" value="Mono DMIC L Mux"/>
+      <value type="string" value="Microphone"/>
+      <value type="string" value="Speaker"/>
+      <value type="string" value="Headphone"/>
+      <value type="string" value="Master"/>
+    </property>
+    <property name="CaptureMonitorofBuiltinAudioStereoPulseAudioMixer" type="array">
+      <value type="string" value="Master"/>
+    </property>
+    <property name="CaptureBuiltinAudioStereoPulseAudioMixer" type="array">
+      <value type="string" value="Master"/>
+    </property>
+  </property>
+  <property name="window-height" type="int" value="284"/>
+  <property name="window-width" type="int" value="930"/>
+  <property name="active-card" type="string" value="HDAIntelHDMIAlsamixer"/>
+  <property name="volume-step-size" type="uint" value="5"/>
+</channel>

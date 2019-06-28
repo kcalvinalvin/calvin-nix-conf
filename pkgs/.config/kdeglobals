@@ -1,0 +1,9 @@
+[$Version]
+update_info=filepicker.upd:filepicker-remove-old-previews-entry,fonts_global.upd:Fonts_Global,fonts_global_toolbar.upd:Fonts_Global_Toolbar
+
+[General]
+dbfile=/home/calvin/.mozilla/firefox/dvbkf7t3.default/places.sqlite
+
+[KScreen]
+ScaleFactor=1.7
+ScreenScaleFactors=eDP-1=1.7;DP-1=1.7;DP-2=1.7;

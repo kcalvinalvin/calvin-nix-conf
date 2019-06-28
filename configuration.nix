@@ -10,10 +10,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
+  boot.extraModprobeConfig = ''
+    options snd_soc_sst_bdw_rt5677_mach index=0
+    options snd-hda-intel index=1
+  '';
+
   networking.hostName = "bitcoin";
   networking.networkmanager.enable = true;
 
- # Configure the Nix package manager
+  # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
     config.packageOverrides =  {
@@ -22,7 +27,8 @@
       xf86-input-cmnt = import ./pkgs/xf86-input-cmt;
       chromium-xorg-conf = import ./pkgs/chromium-xorg-conf;
     };
-  }; 
+  };
+
   environment.systemPackages = with pkgs; [
     firefox
     mosh
@@ -38,11 +44,23 @@
     blueman
     networkmanager
     gnupg
-    jsoncpp
-    #custom packages
-    libgestures
-    libevdevc
-    xf86-input-cmt
+    lsof
+    lxqt.pavucontrol-qt
+    jsoncpp # dependency for libgestures
+    nix-prefetch
+    nix-prefetch-git
+    nix-prefetch-github
+    gnomeExtensions.caffeine
+    xorg.xbacklight
+    xinput_calibrator
+    xdotool #dependency for libinput-gestures
+    wmctrl #dependency for libinput-gestures
+    libinput-gestures
+
+    #custom packages for the touchpad/touchscreen
+    libgestures #dependency for xf86-input-cmt
+    libevdevc  #dependency for xf86-input-cmt
+    xf86-input-cmt #chromebook touchpad driver
   ];
 
   #Locale
@@ -50,33 +68,31 @@
     consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
+    inputMethod.enabled = "uim";
   };
     
-  i18n.inputMethod = {
-    enabled = "uim";
-  };
-  
   #timezone
   time.timeZone = "Asia/Seoul";
     
   #audio
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  hardware.bluetooth.enable = true;
+ 
+  #Custom touchpad driver for Chromebook Samus
   hardware.samus.cmt.enable = true;
   
   services.xserver = {
     enable = true;
-    dpi = 192;
     xkbModel = "chromebook";
+    dpi = 150;
+    desktopManager.xfce.enable = true;
   };
-  services.xserver.desktopManager.xfce = {
-    enable = true;
-  };
-    
+
   users.users.calvin = { #choose a username
     isNormalUser = true;
     home = "/home/calvin";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "input" ];
   };
   system.stateVersion = "19.03";
 

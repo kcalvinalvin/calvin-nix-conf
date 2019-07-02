@@ -1,6 +1,5 @@
 Section "Device"
-Identifier  "Card0"
-Driver      "intel"
-Option      "Backlight"  "/sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/brightness"
+        Identifier  "Intel Graphics" 
+        Driver      "intel"
+        Option      "Backlight"  "intel_backlight"
 EndSection
-

@@ -1,4 +1,4 @@
-{ config, lib, ...  }:
+{ config, pkgs, lib, ...  }:
 
 with lib;
 
@@ -12,8 +12,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.xserver.modules = [ pkgs.xbacklight ];
-
     environment.etc."X11/xorg.conf.d/xbacklight.conf".source = 
       ./conf;
   };

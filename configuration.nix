@@ -73,10 +73,12 @@
   #timezone
   time.timeZone = "Asia/Seoul";
     
-  #audio
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
+  hardware.backlight.enable = true;
+  hardware.enableAllFirmware = true;
+  hardware.pulseaudio.package = pkgs.pulseaudioFull;
  
   #Custom touchpad driver for Chromebook Samus
   hardware.samus.cmt.enable = true;

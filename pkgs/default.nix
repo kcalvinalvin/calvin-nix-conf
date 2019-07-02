@@ -8,4 +8,6 @@ self: super: {
   chromium-xorg-conf = super.callPackage ./chromium-xorg-conf {};
   
   home-manager = super.callPackage ./home-manager {};
+
+  btcpayserver = super.callPackage ./btcpayserver {};
 }

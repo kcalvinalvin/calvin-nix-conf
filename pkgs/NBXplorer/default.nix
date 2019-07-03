@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, fetchurl, makeWrapper, dotnet-sdk, dotnetPackages }:
+{ stdenv, fetchgit, fetchurl, makeWrapper, dotnet-sdk, dotnetPackages, mono }:
 
 let
 
@@ -16,13 +16,14 @@ stdenv.mkDerivation rec {
     sha256 = "02dscrij86frcys1z3yvsx54d3766zqp10kc2ay7yggxf2rav92q";
   };
 
-  buildInputs = [dotnet-sdk makeWrapper dotnetPackages.Nuget ];
+  buildInputs = [dotnet-sdk makeWrapper dotnetPackages.Nuget mono ];
 
   buildPhase = ''
     mkdir home
     export HOME=$PWD/home
     export DOTNET_CLI_TELEMETRY_OUTPUT=1
     export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+    export FrameWorkPathOverride=${mono}/lib/mono/4.7.1-api
 
     nuget sources Disable -Name "nuget.org"
     

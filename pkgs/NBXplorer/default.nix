@@ -17,12 +17,6 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs = [dotnet-sdk makeWrapper dotnetPackages.Nuget ];
-  
-  patchPhase = ''
-    for f in $(find . -iname "*.csproj"); do
-      sed -i '/Include="Microsoft.SourceLink.Github"/d' $f
-    done
-  '';
 
   buildPhase = ''
     mkdir home
@@ -36,8 +30,8 @@ stdenv.mkDerivation rec {
       nuget add $package -Source nixos
     done
    
-    dotnet restore --source nixos src/NBXplorer.sln
-    dotnet build --no-restore -c Release src/NBXplorer.sln
+    dotnet restore --source nixos $src/NBXplorer.sln
+    dotnet build --no-restore -c Release $src/NBXplorer.sln
   '';
 
   installPhase = ''

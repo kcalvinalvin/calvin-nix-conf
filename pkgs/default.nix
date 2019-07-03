@@ -10,4 +10,6 @@ self: super: {
   home-manager = super.callPackage ./home-manager {};
 
   btcpayserver = super.callPackage ./btcpayserver {};
+
+  NBXplorer = super.callPackage ./NBXplorer {};
 }

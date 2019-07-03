@@ -26,7 +26,8 @@
       libevdevc = import ./pkgs/libevdevc;
       xf86-input-cmnt = import ./pkgs/xf86-input-cmt;
       chromium-xorg-conf = import ./pkgs/chromium-xorg-conf;
-      btcpayserver = import ./pkgs/btcpayserver;
+      NBXplorer = import ./pkgs/NBXplorer;
+      #btcpayserver = import ./pkgs/btcpayserver;
     };
   };
 
@@ -57,6 +58,9 @@
     wmctrl #dependency for libinput-gestures
     dotnet-sdk
     libinput-gestures
+    altcoins.bitcoin
+    makeWrapper
+    dotnetPackages.Nuget
 
     #custom packages for the touchpad/touchscreen
     libgestures #dependency for xf86-input-cmt
@@ -64,7 +68,8 @@
     xf86-input-cmt #chromebook touchpad driver
 
     #custom bitcoin related packages
-    btcpayserver
+    #btcpayserver
+    NBXplorer
   ];
 
   #Locale

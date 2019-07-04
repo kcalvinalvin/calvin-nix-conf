@@ -38,8 +38,8 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/{bin/NBXplorer,lib/NBXplorer}
     cp -r bin/Release/* $out/lib/NBXplorer
-    echo -e '#!/bin/bash \n #launch nbxplorer \n dotnet run --no-launch-profile --no-build -c Release -p "/usr/lib/nbxplorer/NBXplorer/NBXplorer.csproj" -- $@' > $out/lib/NBXplorer/run.sh
-    makeWrapper "$out/lib/NBXplorer/run.sh $out/bin/NBXplorer
+    makeWrapper "$out/lib/NBXplorer/bin/mono" $out/bin/NBXplorer \
+      --add-flags "$out/lib/NBXplorer/NBXplorer.ClusterNode/net471/NBXplorer.ClusterNode.exe"
   '';  
  
   meta = {

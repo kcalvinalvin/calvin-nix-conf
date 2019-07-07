@@ -69,7 +69,7 @@
 
     #custom bitcoin related packages
     #btcpayserver
-    NBXplorer
+    #NBXplorer
   ];
 
   #Locale
@@ -103,8 +103,16 @@
   users.users.calvin = { #choose a username
     isNormalUser = true;
     home = "/home/calvin";
+    
     extraGroups = [ "wheel" "networkmanager" "audio" "input" ];
   };
+ 
+  #environment.etc = {
+  #  "vim".source = ./vim;
+  #  "vimrc".source = ./vimrc;
+  #  "bashrc".source = ./bashrc;
+  #};
+
   system.stateVersion = "19.03";
 
 }

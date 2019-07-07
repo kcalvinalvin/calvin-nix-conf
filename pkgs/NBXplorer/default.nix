@@ -21,16 +21,16 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     mkdir home
     export HOME=$PWD/home
+
     export DOTNET_CLI_TELEMETRY_OUTPUT=1
     export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
-    export FrameWorkPathOverride=${mono}/lib/mono/4.7.1-api
 
     nuget sources Disable -Name "nuget.org"
     
     for package in ${toString deps}; do
       nuget add $package -Source nixos
     done
-   
+  
     dotnet restore --source nixos $src/NBXplorer.sln
     dotnet build --no-restore -c Release $src/NBXplorer.sln
   '';
@@ -38,9 +38,11 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/{bin/NBXplorer,lib/NBXplorer}
     cp -r bin/Release/* $out/lib/NBXplorer
-    makeWrapper "$out/lib/NBXplorer/bin/mono" $out/bin/NBXplorer \
-      --add-flags "$out/lib/NBXplorer/NBXplorer.ClusterNode/net471/NBXplorer.ClusterNode.exe"
+    echo -e '#!/bin/bash \n #launch NBXplorer \n dotnet run --no-launch-profile --no-build -c Release -p "$out/lib/NBXplorer/NBXplorer.csproj" -- $@' > run.sh
+    makeWrapper 
   '';  
+
+  dontStrip = true;
  
   meta = {
     description = "A minimalist UTXO tracker for HD Cryptocurrency Wallets.";

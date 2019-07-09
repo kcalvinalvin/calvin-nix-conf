@@ -11,16 +11,16 @@ stdenv.mkDerivation rec {
   version = "2.0.0.51";
   
   src = fetchgit {
-    url = "https://github.com/dgarage/NBXplorer.git";
+    url = "https://github.com/kcalvinalvin/NBXplorer.git";
     rev = "v${version}";
-    sha256 = "02dscrij86frcys1z3yvsx54d3766zqp10kc2ay7yggxf2rav92q";
+    sha256 = "0y8jwn5pabcf1am0scnl7l3sfqpvsywz9kdmzjhmzkg0g7cc1hw4";
   };
 
   buildInputs = [dotnet-sdk makeWrapper dotnetPackages.Nuget mono ];
 
   buildPhase = ''
-    mkdir home
-    export HOME=$PWD/home
+    export TMPDIR=/build/source/obj
+    export HOME=$TMPDIR
 
     export DOTNET_CLI_TELEMETRY_OUTPUT=1
     export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1

@@ -69,7 +69,7 @@
 
     #custom bitcoin related packages
     #btcpayserver
-    #NBXplorer
+    NBXplorer
   ];
 
   #Locale
@@ -105,6 +105,16 @@
     home = "/home/calvin";
     
     extraGroups = [ "wheel" "networkmanager" "audio" "input" ];
+  };
+
+  programs.bash.shellAliases = {
+    l = "ls";
+    la = "ls -a";
+    vi = "vim";
+    googlePing = "ping 8.8.8.8";
+    claer = "clear";
+    clera = "clear";
+    caler = "clear";
   };
  
   #environment.etc = {

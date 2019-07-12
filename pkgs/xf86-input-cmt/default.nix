@@ -25,4 +25,10 @@ stdenv.mkDerivation rec {
   configureFlags = [
     "--with-sdkdir=${placeholder "out"}"
   ];
+
+  meta = {
+    description = "Chromebook touchpad driver";
+    license = stdenv.lib.licenses.mit;
+    platforms = stdenv.lib.platforms.linux;
+  };
 }

@@ -33,8 +33,12 @@ stdenv.mkDerivation rec {
       nuget add $package -Source nixos
     done
 
-    dotnet restore --source nixos BTCpayserver/BTCpayserver.csproj
-    dotnet build --no-restore -c Release BTCpayserver/BTCpayserver.csproj
+    dotnet restore --source nixos BTCPayServer.Rating/BTCPayServer.Rating.csproj
+    dotnet build --no-restore -c Release BTCPayServer.Rating/BTCPayServer.Rating.csproj
+    dotnet restore --source nixos BTCPayServer.Common/BTCPayServer.Common.csproj
+    dotnet build --no-restore -c Release BTCPayServer.Common/BTCPayServer.Common.csproj
+    dotnet restore --source nixos BTCPayServer/BTCPayServer.csproj
+    dotnet build --no-restore -c Release BTCPayServer/BTCPayServer.csproj
   '';
   
   installPhase = ''
@@ -42,7 +46,7 @@ stdenv.mkDerivation rec {
     echo -e '#!/usr/bin/env bash \n #launch BTCpayserver \n scriptdir=`dirname $(readlink $(which btcpayserver))` \n dotnet exec --additionalprobingpath $scriptdir/../home/.nuget/packages/ $scriptdir/../BTCPayServer/bin/Release/netcoreapp2.1/BTCPayServer.dll' > $out/bin/run.sh
     chmod +x $out/bin/run.sh
     cp -r ./* $out
-    ln -s $out/bin/run.sh $out/bin/BTCPayServer
+    ln -s $out/bin/run.sh $out/bin/btcpayserver
   '';
 
   dontStrip = true;

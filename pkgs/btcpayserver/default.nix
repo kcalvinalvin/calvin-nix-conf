@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
     sha256 = "01g83bwgwci45fvqpszyimwn9ki3d6n78wbd9p9sgpl9cv25spjg";
   };
   #for nix-bitcoin replace altcoins.bitcoin with bitcoind
-  buildInputs = [dotnet-sdk Nuget];
+  buildInputs = [dotnet-sdk dotnetPackages.Nuget];
 
   buildPhase = ''
     mkdir home

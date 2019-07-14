@@ -12,4 +12,6 @@ self: super: {
   btcpayserver = super.callPackage ./btcpayserver {};
 
   NBXplorer = super.callPackage ./NBXplorer {};
+
+  fetchNuGet = super.callPackage ./fetchNuGet {};
 }

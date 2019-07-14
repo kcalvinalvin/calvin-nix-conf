@@ -23,22 +23,4 @@ else
 
     dontBuild = true;
 
-    preInstall = ''
-      t="$(echo "$e" | sed -e "s/%20/\ /g" -e "s/%2B/+/g")"
-
-      function traverseRenameDefine () {
-          [ "$t" != "$e" ] && mv -vn "$e" "$t"
-
-      function traverseRename () {
-        for e in *; do
-          traverseRenameDefine
-          if [ -d "$t" ]; then
-            cd "$t"
-            traverseRenameDefine
-            cd ..
-          fi
-        done
-      }
-      traverseRename
-   '';
 } // attrs)

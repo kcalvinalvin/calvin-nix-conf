@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     sha256 = "0y8jwn5pabcf1am0scnl7l3sfqpvsywz9kdmzjhmzkg0g7cc1hw4";
   };
 
-  buildInputs = [dotnet-sdk dotnetPackages.Nuget ];
+  buildInputs = [dotnet-sdk Nuget ];
 
   buildPhase = ''
     mkdir home

@@ -1,5 +1,13 @@
 { config, pkgs, ... }:
 
+let nix-bitcoin = import (pkgs.fetchFromGitHub {
+      owner = "fort-nix";
+      repo  = "nix-bitcoin";
+      rev   = "030c50f36448160afa2700f2260a9254cd4fd734";
+      sha256 = "0qds3hw88nq0qka3nx8q9p39ibw6jq1n8z5fv7gik3zksgdbhpzf";
+    }) { inherit pkgs; };
+in
+
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -21,13 +29,11 @@
   # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
-    config.packageOverrides =  {
+    config.packageOverrides = super: {
       libgestures = import ./pkgs/libgestures;
       libevdevc = import ./pkgs/libevdevc;
       xf86-input-cmnt = import ./pkgs/xf86-input-cmt;
       chromium-xorg-conf = import ./pkgs/chromium-xorg-conf;
-      NBXplorer = import ./pkgs/NBXplorer;
-      btcpayserver = import ./pkgs/btcpayserver;
       hcxtools = import ./pkgs/hcxtools;
       hcxdumptool = import ./pkgs/hcxdumptool;
     };
@@ -65,6 +71,7 @@
     dotnetPackages.Nuget
     openssl
     hashcat
+    qbittorrent
 
     #custom packages for the touchpad/touchscreen
     libgestures #dependency for xf86-input-cmt
@@ -72,13 +79,13 @@
     xf86-input-cmt #chromebook touchpad driver
 
     #custom bitcoin related packages
-    btcpayserver
-    NBXplorer
 
     #custom pkgs for pentesting
     hcxtools
     hcxdumptool
   ];
+
+  
 
   #Locale
   i18n = {

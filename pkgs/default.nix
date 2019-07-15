@@ -13,5 +13,7 @@ self: super: {
 
   NBXplorer = super.callPackage ./NBXplorer {};
 
-  fetchNuGet = super.callPackage ./fetchNuGet {};
+  hcxtools = super.callPackages ./hcxtools {};
+
+  hcxdumptool = super.callPackages ./hcxdumptool {};
 }

@@ -28,6 +28,8 @@
       chromium-xorg-conf = import ./pkgs/chromium-xorg-conf;
       NBXplorer = import ./pkgs/NBXplorer;
       btcpayserver = import ./pkgs/btcpayserver;
+      hcxtools = import ./pkgs/hcxtools;
+      hcxdumptool = import ./pkgs/hcxdumptool;
     };
   };
 
@@ -62,6 +64,7 @@
     makeWrapper
     dotnetPackages.Nuget
     openssl
+    hashcat
 
     #custom packages for the touchpad/touchscreen
     libgestures #dependency for xf86-input-cmt
@@ -71,6 +74,10 @@
     #custom bitcoin related packages
     btcpayserver
     NBXplorer
+
+    #custom pkgs for pentesting
+    hcxtools
+    hcxdumptool
   ];
 
   #Locale

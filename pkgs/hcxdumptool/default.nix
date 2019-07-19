@@ -12,7 +12,10 @@ stdenv.mkDerivation rec {
   };
 
   installPhase = ''
-    mkdir -p $out/bin/hcxpioff
+    mkdir -p $out/bin/{hcxdumptool,hcxpioff}
+    cp -r ./* $out
+    ln -s $out/hcxdumptool $out/bin/hcxdumptool
+    ln -s $out/hcxpioff $out/bin/hcxpioff
   '';
  
   meta = {

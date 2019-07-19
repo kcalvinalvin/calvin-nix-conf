@@ -7,7 +7,7 @@ self: super: {
 
   chromium-xorg-conf = super.callPackage ./chromium-xorg-conf {};
   
-  home-manager = super.callPackage ./home-manager {};
+  #home-manager = super.callPackage ./home-manager {};
 
   hcxtools = super.callPackages ./hcxtools {};
 

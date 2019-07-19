@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, zlib, openssl, curl }: 
+{ stdenv, fetchFromGitHub, zlib, openssl, curl, libpcap }: 
 
 stdenv.mkDerivation rec {
   name = "hcxtools";
@@ -14,8 +14,11 @@ stdenv.mkDerivation rec {
   buildInputs = [ openssl zlib curl ];
 
   installPhase = ''
-    mkdir -p $out/bin/hcxpcaptool
+    mkdir -p $out/bin/
+    cp -r ./* $out/
   '';
+
+  dontStrip = true;
 
   meta = {
     description = "Small set of tools convert packets from captures (h = hash, c = capture, convert and calculate candidates, x = different hashtypes) for the use with latest hashcat or John the Ripper.";

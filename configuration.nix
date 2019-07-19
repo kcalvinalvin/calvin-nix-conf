@@ -18,10 +18,7 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
-  boot.extraModprobeConfig = ''
-    options snd_soc_sst_bdw_rt5677_mach index=0
-    options snd-hda-intel index=1
-  '';
+  swapDevices = [ { device = "/dev/sda1";} ];
 
   networking.hostName = "bitcoin";
   networking.networkmanager.enable = true;
@@ -55,6 +52,7 @@ in
     networkmanager
     gnupg
     lsof
+    usbutils
     lxqt.pavucontrol-qt
     jsoncpp # dependency for libgestures
     nix-prefetch
@@ -72,11 +70,10 @@ in
     openssl
     hashcat
     qbittorrent
-
-    #custom packages for the touchpad/touchscreen
-    libgestures #dependency for xf86-input-cmt
-    libevdevc  #dependency for xf86-input-cmt
-    xf86-input-cmt #chromebook touchpad driver
+    libpcap
+    python3
+    python37Packages.pip
+    unetbootin
 
     #custom bitcoin related packages
 
@@ -102,7 +99,6 @@ in
   hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
   hardware.backlight.enable = true;
-  hardware.enableAllFirmware = true;
   hardware.pulseaudio.package = pkgs.pulseaudioFull;
  
   #Custom touchpad driver for Chromebook Samus
@@ -111,7 +107,7 @@ in
   services.xserver = {
     enable = true;
     xkbModel = "chromebook";
-    dpi = 150;
+    dpi = 182;
     desktopManager.xfce.enable = true;
   };
 

@@ -74,6 +74,8 @@ in
     python3
     python37Packages.pip
     unetbootin
+    nixos.aircrack-ng
+    bettercap
 
     #custom bitcoin related packages
 
@@ -101,14 +103,12 @@ in
   hardware.backlight.enable = true;
   hardware.pulseaudio.package = pkgs.pulseaudioFull;
  
-  #Custom touchpad driver for Chromebook Samus
-  hardware.samus.cmt.enable = true;
-  
   services.xserver = {
     enable = true;
     xkbModel = "chromebook";
     dpi = 182;
     desktopManager.xfce.enable = true;
+    cmt.enable = true;
   };
 
   users.users.calvin = { #choose a username
@@ -128,12 +128,6 @@ in
     caler = "clear";
   };
  
-  #environment.etc = {
-  #  "vim".source = ./vim;
-  #  "vimrc".source = ./vimrc;
-  #  "bashrc".source = ./bashrc;
-  #};
-
   system.stateVersion = "19.03";
 
 }

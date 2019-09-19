@@ -1,13 +1,5 @@
 { config, pkgs, ... }:
 
-let nix-bitcoin = import (pkgs.fetchFromGitHub {
-      owner = "fort-nix";
-      repo  = "nix-bitcoin";
-      rev   = "030c50f36448160afa2700f2260a9254cd4fd734";
-      sha256 = "0qds3hw88nq0qka3nx8q9p39ibw6jq1n8z5fv7gik3zksgdbhpzf";
-    }) { inherit pkgs; };
-in
-
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -53,20 +45,10 @@ in
     gnupg
     lsof
     usbutils
-    lxqt.pavucontrol-qt
-    jsoncpp # dependency for libgestures
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
-    xorg.xbacklight
     xinput_calibrator
-    xdotool #dependency for libinput-gestures
-    wmctrl #dependency for libinput-gestures
-    dotnet-sdk
-    libinput-gestures
-    altcoins.bitcoin
-    makeWrapper
-    dotnetPackages.Nuget
     openssl
     hashcat
     qbittorrent
@@ -100,7 +82,6 @@ in
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
-  hardware.backlight.enable = true;
   hardware.pulseaudio.package = pkgs.pulseaudioFull;
  
   services.xserver = {

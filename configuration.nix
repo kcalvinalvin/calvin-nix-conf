@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -19,6 +19,25 @@
   # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
+    config.packageOverrides = pkgs: with pkgs; {
+      myNeovim = neovim.override {
+        configure = {
+          customRC = ''
+            syntax enable
+            set background=dark
+            colorscheme solarized
+          '';
+          packages.myVimpackage = with pkgs.vimPlugins; {
+	    start = [
+	      deoplete-nvim
+              vim-go
+              vim-fugitive
+              vim-colors-solarized
+            ];
+          };
+        };
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -27,13 +46,16 @@
     git
     tmux
     tree
+    xclip
     python
     gcc
     vim
+    myNeovim
     vlc
     gnumake
     hexchat
     unzip
+    bitcoind
     exfat
     gptfdisk
     blueman
@@ -42,6 +64,7 @@
     lsof
     lshw
     usbutils
+    nmon
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
@@ -58,6 +81,8 @@
     uim
     lm_sensors
   ];
+
+  environment.etc."inputrc".source = lib.mkForce ./custominputrc;
 
   #Locale
   i18n = {
@@ -103,7 +128,14 @@
     caler = "clear";
     lcear = "clear";
     lcaer = "clear";
+    celar = "clear";
+    go = "steam-run $HOME/goroot/bin/go";
+    cp = "cp -i";
+    df = "df -h";
   };
+
+  programs.vim.defaultEditor = true;
+
  
   system.stateVersion = "19.09";
 

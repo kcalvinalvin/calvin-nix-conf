@@ -4,13 +4,14 @@
   imports =
     [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./modules
     ];
     
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
-  swapDevices = [ { device = "/dev/sda1";} ];
+  swapDevices = [ { device = "/dev/sda2";} ];
+
+  hardware.opengl.enable = true;
 
   networking.hostName = "bitcoin";
   networking.networkmanager.enable = true;
@@ -18,14 +19,6 @@
   # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
-    config.packageOverrides = super: {
-      libgestures = import ./pkgs/libgestures;
-      libevdevc = import ./pkgs/libevdevc;
-      xf86-input-cmnt = import ./pkgs/xf86-input-cmt;
-      chromium-xorg-conf = import ./pkgs/chromium-xorg-conf;
-      hcxtools = import ./pkgs/hcxtools;
-      hcxdumptool = import ./pkgs/hcxdumptool;
-    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -39,11 +32,15 @@
     vim
     vlc
     gnumake
+    hexchat
     unzip
+    exfat
+    gptfdisk
     blueman
     networkmanager
     gnupg
     lsof
+    lshw
     usbutils
     nix-prefetch
     nix-prefetch-git
@@ -52,21 +49,15 @@
     openssl
     hashcat
     qbittorrent
-    libpcap
     python3
     python37Packages.pip
-    unetbootin
-    nixos.aircrack-ng
     bettercap
-
-    #custom bitcoin related packages
-
-    #custom pkgs for pentesting
-    hcxtools
-    hcxdumptool
+    obs-studio
+    pinta
+    yakuake
+    uim
+    lm_sensors
   ];
-
-  
 
   #Locale
   i18n = {
@@ -86,10 +77,12 @@
  
   services.xserver = {
     enable = true;
+    libinput.enable = false;
     xkbModel = "chromebook";
     dpi = 182;
-    desktopManager.xfce.enable = true;
+    desktopManager.plasma5.enable = true;
     cmt.enable = true;
+    cmt.models = "samus";
   };
 
   users.users.calvin = { #choose a username
@@ -102,13 +95,16 @@
   programs.bash.shellAliases = {
     l = "ls";
     la = "ls -a";
-    vi = "vim";
+    vi = "nvim";
+    vim = "nvim";
     googlePing = "ping 8.8.8.8";
     claer = "clear";
     clera = "clear";
     caler = "clear";
+    lcear = "clear";
+    lcaer = "clear";
   };
  
-  system.stateVersion = "19.03";
+  system.stateVersion = "19.09";
 
 }

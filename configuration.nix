@@ -19,26 +19,8 @@
   # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
-    config.packageOverrides = pkgs: with pkgs; {
-      myNeovim = neovim.override {
-        configure = {
-          customRC = ''
-            syntax enable
-            set background=dark
-            colorscheme solarized
-          '';
-          packages.myVimpackage = with pkgs.vimPlugins; {
-	    start = [
-	      deoplete-nvim
-              vim-go
-              vim-fugitive
-              vim-colors-solarized
-            ];
-          };
-        };
-      };
-    };
-  };
+    #config.packageOverrides = pkgs:
+  }; 
 
   environment.systemPackages = with pkgs; [
     firefox
@@ -50,7 +32,7 @@
     python
     gcc
     vim
-    myNeovim
+    neovim
     vlc
     gnumake
     hexchat
@@ -81,8 +63,6 @@
     uim
     lm_sensors
   ];
-
-  environment.etc."inputrc".source = lib.mkForce ./custominputrc;
 
   #Locale
   i18n = {
@@ -120,8 +100,8 @@
   programs.bash.shellAliases = {
     l = "ls";
     la = "ls -a";
-    vi = "nvim";
-    vim = "nvim";
+    #vi = "nvim";
+    #vim = "nvim";
     googlePing = "ping 8.8.8.8";
     claer = "clear";
     clera = "clear";
@@ -133,9 +113,6 @@
     cp = "cp -i";
     df = "df -h";
   };
-
-  programs.vim.defaultEditor = true;
-
  
   system.stateVersion = "19.09";
 

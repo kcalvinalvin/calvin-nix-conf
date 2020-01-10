@@ -8,10 +8,9 @@
     
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   
   swapDevices = [ { device = "/dev/sda2";} ];
-
-  hardware.opengl.enable = true;
 
   networking.hostName = "bitcoin";
   networking.networkmanager.enable = true;
@@ -19,25 +18,18 @@
   # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
-    config.packageOverrides = pkgs: with pkgs; {
-      myNeovim = neovim.override {
-        configure = {
-          customRC = ''
-            syntax enable
-            set background=dark
-            colorscheme solarized
-          '';
-          packages.myVimpackage = with pkgs.vimPlugins; {
-	    start = [
-	      deoplete-nvim
-              vim-go
-              vim-fugitive
-              vim-colors-solarized
-            ];
-          };
-        };
-      };
+    config.packageOverrides = pkgs: {
+      vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
     };
+  };
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+      intel-media-driver
+    ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -50,7 +42,6 @@
     python
     gcc
     vim
-    myNeovim
     vlc
     gnumake
     hexchat
@@ -58,7 +49,6 @@
     bitcoind
     exfat
     gptfdisk
-    blueman
     networkmanager
     gnupg
     lsof
@@ -84,6 +74,13 @@
 
   environment.etc."inputrc".source = lib.mkForce ./custominputrc;
 
+  environment.variables = {
+    MESA_LOADER_DRIVER_OVERRIDE = "iris";
+  };
+  hardware.opengl.package = (pkgs.mesa.override {
+    galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
+  }).drivers;
+
   #Locale
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -97,18 +94,20 @@
     
   sound.enable = true;
   hardware.pulseaudio.enable = true;
-  hardware.bluetooth.enable = true;
   hardware.pulseaudio.package = pkgs.pulseaudioFull;
  
   services.xserver = {
     enable = true;
     libinput.enable = false;
+    #videoDrivers = [ "intel" ];
     xkbModel = "chromebook";
     dpi = 182;
     desktopManager.plasma5.enable = true;
     cmt.enable = true;
     cmt.models = "samus";
   };
+  # blueman that doesn't take up 20% of cpu
+  services.blueman.enable = true;
 
   users.users.calvin = { #choose a username
     isNormalUser = true;
@@ -135,7 +134,6 @@
   };
 
   programs.vim.defaultEditor = true;
-
  
   system.stateVersion = "19.09";
 

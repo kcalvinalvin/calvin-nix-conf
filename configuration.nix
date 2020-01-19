@@ -18,7 +18,6 @@
   # Configure the Nix package manager
   nixpkgs = {
     config.allowUnfree = true;
-<<<<<<< HEAD
     config.packageOverrides = pkgs: {
       vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
     };
@@ -32,10 +31,6 @@
       intel-media-driver
     ];
   };
-=======
-    #config.packageOverrides = pkgs:
-  }; 
->>>>>>> b84b228162e81526f91a2941871459a85350d4a8
 
   environment.systemPackages = with pkgs; [
     firefox
@@ -47,10 +42,6 @@
     python
     gcc
     vim
-<<<<<<< HEAD
-=======
-    neovim
->>>>>>> b84b228162e81526f91a2941871459a85350d4a8
     vlc
     gnumake
     hexchat
@@ -81,7 +72,6 @@
     lm_sensors
   ];
 
-<<<<<<< HEAD
   environment.etc."inputrc".source = lib.mkForce ./custominputrc;
 
   environment.variables = {
@@ -91,12 +81,10 @@
     galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
   }).drivers;
 
-=======
->>>>>>> b84b228162e81526f91a2941871459a85350d4a8
   #Locale
   i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
+    console.font = "Lat2-Terminus16";
+    console.keyMap = "us";
     defaultLocale = "en_US.UTF-8";
     inputMethod.enabled = "uim";
   };
@@ -125,7 +113,6 @@
     isNormalUser = true;
     home = "/home/calvin";
     
-    extraGroups = [ "wheel" "networkmanager" "audio" "input" ];
   };
 
   programs.bash.shellAliases = {
@@ -140,15 +127,13 @@
     lcear = "clear";
     lcaer = "clear";
     celar = "clear";
+    clare = "clear";
     go = "steam-run $HOME/goroot/bin/go";
     cp = "cp -i";
     df = "df -h";
   };
-<<<<<<< HEAD
 
   programs.vim.defaultEditor = true;
-=======
->>>>>>> b84b228162e81526f91a2941871459a85350d4a8
  
   system.stateVersion = "19.09";
 

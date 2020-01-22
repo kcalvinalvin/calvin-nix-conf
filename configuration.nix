@@ -83,8 +83,8 @@
 
   #Locale
   i18n = {
-    console.font = "Lat2-Terminus16";
-    console.keyMap = "us";
+    consoleFont = "Lat2-Terminus16";
+    consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
     inputMethod.enabled = "uim";
   };
@@ -99,7 +99,7 @@
   services.xserver = {
     enable = true;
     libinput.enable = false;
-    #videoDrivers = [ "intel" ];
+    videoDrivers = [ "intel" ];
     xkbModel = "chromebook";
     dpi = 182;
     desktopManager.plasma5.enable = true;
@@ -118,8 +118,8 @@
   programs.bash.shellAliases = {
     l = "ls";
     la = "ls -a";
-    #vi = "nvim";
-    #vim = "nvim";
+    vi = "nvim";
+    vim = "nvim";
     googlePing = "ping 8.8.8.8";
     claer = "clear";
     clera = "clear";

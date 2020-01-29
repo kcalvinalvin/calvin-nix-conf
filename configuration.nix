@@ -6,8 +6,13 @@
     ./hardware-configuration.nix
     ];
     
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+    grub.enable = true;
+    grub.device = "/dev/sda";
+    grub.useOSProber = true;
+  };
   boot.kernelPackages = pkgs.linuxPackages_latest;
   
   swapDevices = [ { device = "/dev/sda2";} ];
@@ -112,7 +117,7 @@
   users.users.calvin = { #choose a username
     isNormalUser = true;
     home = "/home/calvin";
-    
+    extraGroups = [ "wheel" "networkmanager" "audio" "input" ];
   };
 
   programs.bash.shellAliases = {

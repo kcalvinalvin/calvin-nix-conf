@@ -22,6 +22,7 @@ in with pkgs; neovim.override {
       set history=700
       set laststatus=2
       set signcolumn=yes
+      set hidden
 
       set termguicolors
       set background=dark
@@ -37,6 +38,11 @@ in with pkgs; neovim.override {
 
       " Enable integration with airline.
       let g:airline#extensions#ale#enabled = 1
+
+      " Enable airline-tabline and some settings
+      let g:airline#extensions#tabline#enabled = 1
+      let g:airline#extensions#tabline#fnamemod = ':t'
+      let g:airline#extensions#tabline#formatter = 'default'
 
       let g:rooter_patterns = ['lerna.json', 'package.json', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
 

@@ -34,6 +34,7 @@
     xclip
     python
     gcc
+    go
     vim
     vlc
     gnumake
@@ -61,15 +62,16 @@
   ];
 
   environment.etc."inputrc".source = lib.mkForce ./custominputrc;
+  environment.variables = { GOROOT = [ "${pkgs.go.out}/share/go" ]; };
 
   #Locale
   i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
+    #console.font = "Lat2-Terminus16";
+    #console.keyMap = "us";
     defaultLocale = "en_US.UTF-8";
     inputMethod.enabled = "uim";
   };
-    
+
   #timezone
   time.timeZone = "Asia/Seoul";
     
@@ -81,11 +83,15 @@
   services.xserver = {
     enable = true;
     libinput.enable = true;
+    dpi = 182;
     videoDrivers = [ "intel" ];
     desktopManager.plasma5.enable = true;
   };
   # blueman that doesn't take up 20% of cpu
   services.blueman.enable = true;
+  services.tlp.enable = true;
+
+  powerManagement.powertop.enable = true;
 
   users.users.calvin = { #choose a username
     isNormalUser = true;
@@ -106,7 +112,6 @@
     lcaer = "clear";
     celar = "clear";
     clare = "clear";
-    go = "steam-run $HOME/goroot/bin/go";
     cp = "cp -i";
     df = "df -h";
   };

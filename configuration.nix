@@ -133,7 +133,6 @@
     lcaer = "clear";
     celar = "clear";
     clare = "clear";
-    go = "steam-run $HOME/goroot/bin/go";
     cp = "cp -i";
     df = "df -h";
   };

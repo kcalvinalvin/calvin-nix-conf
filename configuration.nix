@@ -10,10 +10,18 @@
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     grub.enable = true;
-    grub.device = "/dev/sda";
+    grub.device = "nodev";
     grub.useOSProber = true;
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.extraModprobeConfig = ''
+    options snd_soc_sst_bdw_rt5677_mach index=0
+    options snd-hda-intel index=1
+  '';
+  boot.initrd.kernelModules = [
+    "intel_agp"
+    "i915"
+  ];
   
   swapDevices = [ { device = "/dev/sda2";} ];
 
@@ -51,7 +59,6 @@
     gnumake
     hexchat
     unzip
-    bitcoind
     exfat
     gptfdisk
     networkmanager
@@ -65,20 +72,17 @@
     nix-prefetch-github
     xinput_calibrator
     openssl
-    hashcat
     qbittorrent
     python3
     python37Packages.pip
-    bettercap
-    obs-studio
-    pinta
     yakuake
     uim
     lm_sensors
+    go
   ];
 
   environment.etc."inputrc".source = lib.mkForce ./custominputrc;
-
+  environment.variables = { GOROOT = [ "${pkgs.go.out}/share/go" ]; };                                                                                                 
   environment.variables = {
     MESA_LOADER_DRIVER_OVERRIDE = "iris";
   };
@@ -100,19 +104,35 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.pulseaudio.package = pkgs.pulseaudioFull;
+  hardware.cpu.intel.updateMicrocode = true;
+  hardware.enableAllFirmware = true;
+  hardware.bluetooth.enable = true;
  
   services.xserver = {
     enable = true;
     libinput.enable = false;
     videoDrivers = [ "intel" ];
     xkbModel = "chromebook";
-    dpi = 182;
+    dpi = 182; #might be problematic for an external monitor
     desktopManager.plasma5.enable = true;
     cmt.enable = true;
     cmt.models = "samus";
   };
   # blueman that doesn't take up 20% of cpu
   services.blueman.enable = true;
+  services.openssh.enable = true;
+  services.openssh.extraConfig = ''
+    usePAM yes
+    Port 42
+    PasswordAuthentication no
+    GSSAPIAuthentication no
+  '';
+
+  services.xserver.displayManager.lightdm = {
+    enable = true;
+    autoLogin.enable = true;
+    autoLogin.user = "calvin";
+  };
 
   users.users.calvin = { #choose a username
     isNormalUser = true;
@@ -138,6 +158,7 @@
   };
 
   programs.vim.defaultEditor = true;
+  programs.mosh.enable = true;
  
   system.stateVersion = "19.09";
 

@@ -123,7 +123,7 @@
   services.openssh.enable = true;
   services.openssh.extraConfig = ''
     usePAM yes
-    Port 42
+    Port 22
     PasswordAuthentication no
     GSSAPIAuthentication no
   '';
@@ -132,6 +132,10 @@
     enable = true;
     autoLogin.enable = true;
     autoLogin.user = "calvin";
+  };
+  services.ddclient = {
+    enable = true;
+    configFile = "/home/calvin/ddclient/ddclient.conf";
   };
 
   users.users.calvin = { #choose a username
@@ -155,6 +159,7 @@
     clare = "clear";
     cp = "cp -i";
     df = "df -h";
+    monitoroff = "sleep 1; xset dpms force off";
   };
 
   programs.vim.defaultEditor = true;

@@ -4,16 +4,46 @@
   imports =
     [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./wireguard.nix
     ];
     
+  # Boot confs
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     grub.enable = true;
-    grub.device = "nodev";
-    grub.useOSProber = true;
+    grub.device = "nodev"; # allow UEFI grub
+    grub.useOSProber = true; # search for other oses
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  hardware.cpu.intel.updateMicrocode = true;
+  hardware.enableAllFirmware = true;
+
+  hardware.opengl.package = (pkgs.mesa.override {
+    galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
+  }).drivers;
+
+  networking.hostName = "bitcoin";
+  networking.networkmanager.enable = true;
+
+  # Remote stuff
+  services.openssh.enable = true;
+  services.openssh.extraConfig = ''
+    usePAM yes
+    Port 22
+    PasswordAuthentication no
+    GSSAPIAuthentication no
+  '';
+
+  programs.mosh.enable = true;
+
+  services.ddclient = {
+    enable = true;
+    configFile = "/home/calvin/ddclient/ddclient.conf";
+  };
+
+  # Some audio driver confs. Didn't have success
   boot.extraModprobeConfig = ''
     options snd_soc_sst_bdw_rt5677_mach index=0
     options snd-hda-intel index=1
@@ -25,8 +55,25 @@
   
   swapDevices = [ { device = "/dev/sda2";} ];
 
-  networking.hostName = "bitcoin";
-  networking.networkmanager.enable = true;
+  # blueman that doesn't take up 20% of cpu
+  services.blueman.enable = true;
+
+  services.xserver = {
+    enable = true;
+    libinput.enable = false; # Need this as kde for nix enables by default
+    videoDrivers = [ "modesetting" ]; # intel is depreciated
+    xkbModel = "chromebook";
+    dpi = 182; #might be problematic for an external monitor
+    desktopManager.plasma5.enable = true;
+    cmt.enable = true; # Chrome touchpad drivers
+    cmt.models = "samus"; # Chromebook model
+  };
+
+  services.xserver.displayManager.lightdm = {
+    enable = true;
+    autoLogin.enable = true;
+    autoLogin.user = "calvin";
+  };
 
   # Configure the Nix package manager
   nixpkgs = {
@@ -45,6 +92,7 @@
     ];
   };
 
+  # Some default software to install
   environment.systemPackages = with pkgs; [
     firefox
     mosh
@@ -72,70 +120,38 @@
     nix-prefetch-github
     xinput_calibrator
     openssl
-    qbittorrent
     python3
     python37Packages.pip
     yakuake
     uim
     lm_sensors
-    go
+    #go
   ];
 
   environment.etc."inputrc".source = lib.mkForce ./custominputrc;
-  environment.variables = { GOROOT = [ "${pkgs.go.out}/share/go" ]; };                                                                                                 
+  environment.etc."bashrc".text = lib.mkAfter ''eval "$(direnv hook bash)"'';
+  #environment.variables = { GOROOT = [ "${pkgs.go.out}/share/go" ]; };
   environment.variables = {
     MESA_LOADER_DRIVER_OVERRIDE = "iris";
   };
-  hardware.opengl.package = (pkgs.mesa.override {
-    galliumDrivers = [ "nouveau" "virgl" "swrast" "iris" ];
-  }).drivers;
 
   #Locale
   i18n = {
     consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
-    inputMethod.enabled = "uim";
+    inputMethod.enabled = "uim"; # uim for Korean input
   };
     
   #timezone
   time.timeZone = "Asia/Seoul";
     
+  # audio/bluetooth
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.package = pkgs.pulseaudioFull;
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableAllFirmware = true;
   hardware.bluetooth.enable = true;
- 
-  services.xserver = {
+  hardware.pulseaudio = {
     enable = true;
-    libinput.enable = false;
-    videoDrivers = [ "intel" ];
-    xkbModel = "chromebook";
-    dpi = 182; #might be problematic for an external monitor
-    desktopManager.plasma5.enable = true;
-    cmt.enable = true;
-    cmt.models = "samus";
-  };
-  # blueman that doesn't take up 20% of cpu
-  services.blueman.enable = true;
-  services.openssh.enable = true;
-  services.openssh.extraConfig = ''
-    usePAM yes
-    Port 22
-    PasswordAuthentication no
-    GSSAPIAuthentication no
-  '';
-
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-    autoLogin.enable = true;
-    autoLogin.user = "calvin";
-  };
-  services.ddclient = {
-    enable = true;
-    configFile = "/home/calvin/ddclient/ddclient.conf";
+    package = pkgs.pulseaudioFull;
   };
 
   users.users.calvin = { #choose a username
@@ -163,7 +179,6 @@
   };
 
   programs.vim.defaultEditor = true;
-  programs.mosh.enable = true;
  
   system.stateVersion = "19.09";
 

@@ -37,6 +37,27 @@
   '';
 
   programs.mosh.enable = true;
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      l = "ls";
+      la = "ls -a";
+      vi = "nvim";
+      vim = "nvim";
+      googlePing = "ping 8.8.8.8";
+      claer = "clear";
+      clera = "clear";
+      caler = "clear";
+      lcear = "clear";
+      lcaer = "clear";
+      celar = "clear";
+      clare = "clear";
+      cp = "cp -i";
+      df = "df -h";
+      monitoroff = "sleep 1; xset dpms force off";
+      tmux = "direnv exec / tmux";
+    };
+  };
 
   services.ddclient = {
     enable = true;
@@ -82,6 +103,7 @@
       vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
     };
   };
+  # enable opengl
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
@@ -93,6 +115,7 @@
   };
 
   # Some default software to install
+  # This applies to all users on the system
   environment.systemPackages = with pkgs; [
     firefox
     mosh
@@ -125,12 +148,10 @@
     yakuake
     uim
     lm_sensors
-    #go
   ];
 
   environment.etc."inputrc".source = lib.mkForce ./custominputrc;
   environment.etc."bashrc".text = lib.mkAfter ''eval "$(direnv hook bash)"'';
-  #environment.variables = { GOROOT = [ "${pkgs.go.out}/share/go" ]; };
   environment.variables = {
     MESA_LOADER_DRIVER_OVERRIDE = "iris";
   };
@@ -157,6 +178,7 @@
   users.users.calvin = { #choose a username
     isNormalUser = true;
     home = "/home/calvin";
+    shell = pkgs.fish;
     extraGroups = [ "wheel" "networkmanager" "audio" "input" ];
   };
 

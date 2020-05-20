@@ -39,20 +39,13 @@ in with pkgs; neovim.override {
       let g:ale_sign_error = '⤫'
       let g:ale_sign_warning = '⚠'
 
-      let g:ale_linters = {
-      \   'go': ['golangci-lint', 'gofmt', 'golangserver'],
-      \}
+      let g:ale_fixers = {'javascript': ['standard']}
 
 
       " Enable integration with airline.
       let g:airline#extensions#ale#enabled = 1
 
-      " Enable airline-tabline and some settings
-      let g:airline#extensions#tabline#enabled = 1
-      let g:airline#extensions#tabline#fnamemod = ':t'
-      let g:airline#extensions#tabline#formatter = 'default'
-
-      let g:rooter_patterns = ['learn.json', 'package.json', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
+      let g:rooter_patterns = ['lerna.json', 'package.json', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
 
       let g:go_highlight_build_constraints = 1
       let g:go_highlight_extra_types = 1
@@ -63,7 +56,7 @@ in with pkgs; neovim.override {
       let g:go_highlight_structs = 1
       let g:go_highlight_types = 1
 
-      " let g:go_fmt_command = "goimports"
+      let g:go_fmt_command = "goimports"
 
       autocmd FileType go nmap <leader>b  <Plug>(go-build)
       autocmd FileType go nmap <leader>r  <Plug>(go-run)

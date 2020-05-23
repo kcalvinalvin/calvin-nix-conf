@@ -13,7 +13,7 @@
     efi.canTouchEfiVariables = true;
     grub.enable = true;
     grub.device = "nodev"; # allow UEFI grub
-    grub.useOSProber = true; # search for other oses
+    #grub.useOSProber = true; # search for other oses
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -37,6 +37,7 @@
   '';
 
   programs.mosh.enable = true;
+  # could be per user but eh
   programs.fish = {
     enable = true;
     shellAliases = {
@@ -59,6 +60,7 @@
     };
   };
 
+  # dynamic dns
   services.ddclient = {
     enable = true;
     configFile = "/home/calvin/ddclient/ddclient.conf";
@@ -73,7 +75,8 @@
     "intel_agp"
     "i915"
   ];
-  
+
+  # init swap
   swapDevices = [ { device = "/dev/sda2";} ];
 
   # blueman that doesn't take up 20% of cpu
@@ -150,7 +153,6 @@
     lm_sensors
   ];
 
-  environment.etc."inputrc".source = lib.mkForce ./custominputrc;
   environment.etc."bashrc".text = lib.mkAfter ''eval "$(direnv hook bash)"'';
   environment.variables = {
     MESA_LOADER_DRIVER_OVERRIDE = "iris";
@@ -202,6 +204,6 @@
 
   programs.vim.defaultEditor = true;
  
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.03";
 
 }

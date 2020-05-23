@@ -43,13 +43,13 @@ in with pkgs; neovim.override {
       let g:ale_sign_warning = '�'
 
       let g:ale_linters = {
-      \   'go': ['gofmt', 'golangserver', 'golangci-lint'],
+      \   'go': ['gofmt', 'golangserver', 'gopls', 'staticcheck'],
       \}
 
       let g:ale_fixers = {
       \   '*': ['remove_trailing_lines'],
       \   'javascript': ['eslint'],
-      \   'go': ['gofmt', 'golangserver'],
+      \   'go': ['gofmt', 'golangserver', 'gopls', 'staticcheck'],
       \}
 
       " Enable integration with airline.

@@ -1,1 +1,1 @@
-# calvin-nix-conf
+# Personal nix configs

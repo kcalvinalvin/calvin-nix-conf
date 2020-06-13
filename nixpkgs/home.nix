@@ -12,7 +12,6 @@ in
     qwerty
   ];
   services.lorri.enable = true;
-  environment.etc."inputrc" = ./custominputrc;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

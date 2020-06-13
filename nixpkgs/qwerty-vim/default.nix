@@ -9,6 +9,7 @@ in with pkgs; neovim.override {
     customRC = ''
       syntax on
       filetype on
+      set path+=**
       set expandtab
       set smarttab
       set autoindent
@@ -23,7 +24,11 @@ in with pkgs; neovim.override {
       set laststatus=2
       set signcolumn=yes
       set hidden
-      set textwidth=80
+      set textwidth=100
+      set diffopt+=vertical
+      set shell=bash
+      set exrc
+      set secure
 
       set termguicolors
       set background=dark
@@ -37,15 +42,27 @@ in with pkgs; neovim.override {
 
       " Error and warning signs.
       let g:ale_sign_error = '⤫'
-      let g:ale_sign_warning = '⚠'
+      let g:ale_sign_warning = '�'
 
-      let g:ale_fixers = {'javascript': ['standard']}
+      let g:ale_linters = {
+      \   'go': ['gofmt', 'golangserver', 'gopls', 'staticcheck'],
+      \}
 
+      let g:ale_fixers = {
+      \   '*': ['remove_trailing_lines'],
+      \   'javascript': ['eslint'],
+      \   'go': ['gofmt', 'golangserver', 'gopls', 'staticcheck'],
+      \}
 
       " Enable integration with airline.
       let g:airline#extensions#ale#enabled = 1
 
-      let g:rooter_patterns = ['lerna.json', 'package.json', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
+      " Enable airline-tabline and some settings
+      let g:airline#extensions#tabline#enabled = 1
+      let g:airline#extensions#tabline#fnamemod = ':t'
+      let g:airline#extensions#tabline#formatter = 'default'
+
+      let g:rooter_patterns = ['learn.json', 'package.json', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
 
       let g:go_highlight_build_constraints = 1
       let g:go_highlight_extra_types = 1
@@ -57,6 +74,8 @@ in with pkgs; neovim.override {
       let g:go_highlight_types = 1
 
       let g:go_fmt_command = "goimports"
+      let g:go_auto_type_info = 1
+      let g:ale_go_golangci_lint_package = 1
 
       autocmd FileType go nmap <leader>b  <Plug>(go-build)
       autocmd FileType go nmap <leader>r  <Plug>(go-run)
@@ -69,9 +88,9 @@ in with pkgs; neovim.override {
       { names = [
         "ale"
         "any-jump"
+        "vim-addon-nix" "tlib"
         "ctrlp"
         "vim-rooter"
-        "vim-addon-nix" "tlib"
         "fzfWrapper"
         "vim-ripgrep"
         "deoplete-nvim"

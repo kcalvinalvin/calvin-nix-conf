@@ -28,15 +28,31 @@
   networking.networkmanager.enable = true;
 
   # Remote stuff
-  services.openssh.enable = true;
-  services.openssh.extraConfig = ''
+  services.openssh = {
+    enable = true;
+    forwardX11 = true;
+    permitRootLogin = "no";
+    passwordAuthentication = false;
+    gatewayPorts = "yes";
+    extraConfig = ''
     usePAM yes
-    Port 22
-    PasswordAuthentication no
     GSSAPIAuthentication no
   '';
+  };
+  # dynamic dns
+  services.ddclient = {
+    enable = true;
+    configFile = "/home/calvin/ddclient/ddclient.conf";
+  };
+  # xrdp config
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "${pkgs.icewm}/bin/icewm";
+  };
+  networking.firewall.allowedTCPPorts = [ 3389 ];
 
   programs.mosh.enable = true;
+
   # could be per user but eh
   programs.fish = {
     enable = true;
@@ -58,12 +74,6 @@
       monitoroff = "sleep 1; xset dpms force off";
       tmux = "direnv exec / tmux";
     };
-  };
-
-  # dynamic dns
-  services.ddclient = {
-    enable = true;
-    configFile = "/home/calvin/ddclient/ddclient.conf";
   };
 
   # Some audio driver confs. Didn't have success

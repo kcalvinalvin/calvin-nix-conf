@@ -6,7 +6,7 @@
     ./hardware-configuration.nix
     ./wireguard.nix
     ];
-    
+
   # Boot confs
   boot.loader = {
     systemd-boot.enable = true;
@@ -16,6 +16,18 @@
     #grub.useOSProber = true; # search for other oses
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # bandwidth modifications to use more ram but be faster
+  boot.kernel.sysctl = {
+    "net.core.rmem_max" = 16777216;
+    "net.core.wmem_max" = 16777216;
+    "net.core.rmem_default" = 87380;
+    "net.core.wmem_default" = 87380;
+    "net.ipv4.tcp_rmem" = "4096 87380 8388608";
+    "net.ipv4.tcp_wmem" = "4096 65536 8388608";
+    "net.ipv4.tcp_mem" = "8388608 8388608 8388608";
+    "net.ipv4.route.flush" = 1;
+  };
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableAllFirmware = true;
@@ -50,8 +62,13 @@
     defaultWindowManager = "${pkgs.icewm}/bin/icewm";
   };
   networking.firewall.allowedTCPPorts = [ 3389 ];
+  #services.wakeonlan.interfaces = {
+  #  interface = "enp0s20u2";
+  #  method = "magicpacket";
+  #};
 
   programs.mosh.enable = true;
+  programs.bcc.enable = true;
 
   # could be per user but eh
   programs.fish = {
@@ -89,20 +106,31 @@
   # init swap
   swapDevices = [ { device = "/dev/sda2";} ];
 
+  # FIXME uncomment to use as a normal laptop
   # blueman that doesn't take up 20% of cpu
-  services.blueman.enable = true;
+  #services.blueman.enable = true;
 
   services.xserver = {
     enable = true;
-    libinput.enable = false; # Need this as kde for nix enables by default
+    # FIXME comment out these two options to use as a normal laptop
+    layout = "us";
+    xkbOptions = "eurosign:e";
+    # FIXME uncomment to use as a normal laptop
+    #libinput.enable = false; # Need this as kde for nix enables by default
     videoDrivers = [ "modesetting" ]; # intel is depreciated
     xkbModel = "chromebook";
-    dpi = 182; #might be problematic for an external monitor
+    #windowManager.i3.enable = true;
+    #dpi = 182; #might be problematic for an external monitor
     desktopManager.plasma5.enable = true;
-    cmt.enable = true; # Chrome touchpad drivers
-    cmt.models = "samus"; # Chromebook model
+    #cmt.enable = true; # Chrome touchpad drivers
+    #cmt.models = "samus"; # Chromebook model
   };
+  services.logind.extraConfig = ''
+    # don’t shutdown when power button is short-pressed
+    HandlePowerKey = ignore;
+  '';
 
+  # FIXME uncomment to use as a normal laptop
   services.xserver.displayManager.lightdm = {
     enable = true;
     autoLogin.enable = true;
@@ -124,6 +152,7 @@
       vaapiVdpau
       libvdpau-va-gl
       intel-media-driver
+      intel-ocl
     ];
   };
 
@@ -154,12 +183,12 @@
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
-    xinput_calibrator
-    openssl
+    #xinput_calibrator
+    #openssl
     python3
     python37Packages.pip
-    yakuake
-    uim
+    #yakuake
+    #uim
     lm_sensors
   ];
 
@@ -169,23 +198,26 @@
   };
 
   #Locale
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-    inputMethod.enabled = "uim"; # uim for Korean input
-  };
-    
+  console.font = "Lat2-Terminus16";
+  console.keyMap = "us";
+
+  # FIXME uncomment to use as a normal laptop
+  #i18n = {
+  #  defaultLocale = "en_US.UTF-8";
+  #  inputMethod.enabled = "uim"; # uim for Korean input
+  #};
+
   #timezone
   time.timeZone = "Asia/Seoul";
-    
+
+  # FIXME uncomment to use as a normal laptop
   # audio/bluetooth
-  sound.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
-  };
+  #sound.enable = true;
+  #hardware.bluetooth.enable = true;
+  #hardware.pulseaudio = {
+  #  enable = true;
+  #  package = pkgs.pulseaudioFull;
+  #};
 
   users.users.calvin = { #choose a username
     isNormalUser = true;
@@ -212,8 +244,10 @@
     monitoroff = "sleep 1; xset dpms force off";
   };
 
+  nix.trustedUsers = [ "root" "calvin" ];
+
   programs.vim.defaultEditor = true;
- 
+
   system.stateVersion = "20.03";
 
 }

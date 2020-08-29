@@ -1,4 +1,6 @@
-# 1. create a log with `dotnet restore -v m MyPackage.sln > mypackage-restore.log
+# 0. May need to run `dotnet nuget locals all --clear` if the user has built
+# the package with dotnet previously
+# 1. create a log with `dotnet restore -v n MyPackage.sln > mypackage-restore.log
 # 2. then call ./create-deps.sh mypackage-restore.log
 
 urlbase="https://www.nuget.org/api/v2/package"
@@ -13,8 +15,8 @@ EOL
 IFS=''
 while read line; do
   if echo $line | grep -q "Installing "; then
-    name=$(echo $line | sed -r 's/  Installing ([^ ]+) (.+)./\1/')
-    version=$(echo $line | sed -r 's/  Installing ([^ ]+) (.+)./\2/')
+    name=$(echo $line | sed -r 's/         Installing ([^ ]+) (.+)./\1/')
+    version=$(echo $line | sed -r 's/         Installing ([^ ]+) (.+)./\2/')
     sha256=$(nix-prefetch-url "$urlbase/$name/$version" 2>/dev/null)
     cat << EOL
   (fetchNuGet {

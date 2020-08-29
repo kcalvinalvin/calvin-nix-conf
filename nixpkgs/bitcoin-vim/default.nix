@@ -1,9 +1,12 @@
-{ pkgs }:
+{ stdenv, pkgs }:
 
 let
 my_plugins = import ./plugins.nix { inherit (pkgs) vimUtils fetchFromGitHub; };
+in
 
-in with pkgs; neovim.override {
+with pkgs;
+
+neovim.override {
   vimAlias = true;
   configure = {
     customRC = ''
@@ -58,8 +61,8 @@ in with pkgs; neovim.override {
       let g:airline#extensions#ale#enabled = 1
       
       " project specific import path
-      let g:ale_c_clang_options="-I/../"
-      let g:ale_cpp_clang_options="-I/../"
+      let g:ale_c_clang_options="-I/.."
+      let g:ale_cpp_clang_options="-I/.."
 
       " Enable airline-tabline and some settings
       let g:airline#extensions#tabline#enabled = 1

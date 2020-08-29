@@ -1,15 +1,18 @@
-{ config, pkgs, ... }:
+{ stdenv, config, pkgs, callPackage, ... }:
 
 let
-    qwerty = import ./qwerty-vim {inherit pkgs; };
+    qwerty-vim = import ./qwerty-vim {inherit pkgs; };
 in
 
 {
+  imports = [
+    ./tmux
+  ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   home.packages = [
     pkgs.direnv
-    qwerty
+    qwerty-vim
   ];
   services.lorri.enable = true;
 

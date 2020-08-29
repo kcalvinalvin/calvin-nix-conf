@@ -1,9 +1,12 @@
 { pkgs }:
 
 let
-my_plugins = import ./plugins.nix { inherit (pkgs) vimUtils fetchFromGitHub; };
+  my_plugins = import ./plugins.nix { inherit (pkgs) vimUtils fetchFromGitHub; };
+in
 
-in with pkgs; neovim.override {
+with pkgs;
+
+neovim.override {
   vimAlias = true;
   configure = {
     customRC = ''
@@ -24,7 +27,6 @@ in with pkgs; neovim.override {
       set laststatus=2
       set signcolumn=yes
       set hidden
-      set textwidth=100
       set diffopt+=vertical
       set shell=bash
       set exrc
@@ -44,15 +46,36 @@ in with pkgs; neovim.override {
       let g:ale_sign_error = '⤫'
       let g:ale_sign_warning = '�'
 
+      " rust stuff
+      let g:rustfmt_autosave = 1
+
       let g:ale_linters = {
-      \   'go': ['gofmt', 'golangserver', 'gopls', 'staticcheck'],
+      \   'go': ['gofmt', 'golangserver', 'gopls', 'govet'],
+      \   'rust': ['analyzer', 'rustc', 'cargo'],
+      \   'python': ['pyls'],
       \}
 
+      "let g:ale_rust_rls_toolchain = 'stable'
+      "let g:ale_rust_rls_executable = '/home/calvin/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rls'
+      "let g:ale_rust_cargo_use_clippy = 1
+      let g:rustfmt_autosave = 1
+      let g:rust_conceal = 1
+
       let g:ale_fixers = {
-      \   '*': ['remove_trailing_lines'],
+      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \   'javascript': ['eslint'],
-      \   'go': ['gofmt', 'golangserver', 'gopls', 'staticcheck'],
+      \   'go': ['gofmt', 'goimports'],
+      \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'nix': ['nixpkgs-fmt', 'remove_trailing_lines', 'trim_whitespace']
       \}
+      nmap gd :ALEGoToDefinition<CR>
+
+      let g:ale_fix_on_save = 1
+      let g:ale_lint_on_text_changed = 'always'
+      let g:ale_lint_on_enter = 1
+      let g:ale_lint_on_save = 1
+
+      let g:ale_c_parse_makefile = 1
 
       " Enable integration with airline.
       let g:airline#extensions#ale#enabled = 1
@@ -90,7 +113,9 @@ in with pkgs; neovim.override {
         "any-jump"
         "vim-addon-nix" "tlib"
         "ctrlp"
+        "rust-vim"
         "vim-rooter"
+        "vim-racer"
         "fzfWrapper"
         "vim-ripgrep"
         "deoplete-nvim"

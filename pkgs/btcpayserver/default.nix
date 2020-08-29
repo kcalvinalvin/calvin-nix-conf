@@ -1,9 +1,11 @@
-{ stdenv, fetchFromGitHub, fetchurl, dotnet-sdk, NBXplorer, dotnetPackages }:
+{ stdenv, fetchFromGitHub, fetchurl, dotnet-sdk, NBXplorer, dotnetPackages, dotnetCorePackages }:
 #on nix-bitcoin replace altcoins.bitcoin with bitcoind
 
 let
 
   deps = import ./deps.nix {inherit fetchurl;};
+
+  dotnet-sdk = dotnetCorePackages.sdk_3_1;
 
 in
 
@@ -40,7 +42,7 @@ stdenv.mkDerivation rec {
     dotnet restore --source nixos BTCPayServer/BTCPayServer.csproj
     dotnet build --no-restore -c Release BTCPayServer/BTCPayServer.csproj
   '';
-  
+
   installPhase = ''
     mkdir -p $out/bin/
     echo -e '#!/usr/bin/env bash \n #launch BTCpayserver \n scriptdir=`dirname $(readlink $(which btcpayserver))` \n dotnet exec --additionalprobingpath $scriptdir/../home/.nuget/packages/ $scriptdir/../BTCPayServer/bin/Release/netcoreapp2.1/BTCPayServer.dll' > $out/bin/run.sh
@@ -69,5 +71,5 @@ Thanks to the apps built on top of it, you can use BTCPay to receive donations, 
     homepage = "https://btcpayserver.org";
     license = stdenv.lib.licenses.mit;
     platforms = stdenv.lib.platforms.linux;
-  }; 
+  };
 }

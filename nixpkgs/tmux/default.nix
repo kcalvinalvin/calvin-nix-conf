@@ -28,6 +28,8 @@ in
 
       set -g status-right "#{sysstat_cpu} | #{sysstat_mem} | #{sysstat_swap} | #{sysstat_loadavg} | #[fg=cyan]#(echo $USER)#[default]@#H"
 
+      set -g @resurrect-strategy-nvim 'session'
+
       # -- general -------------------------------------------------------------------
 
       set -g default-terminal "screen-256color" # colors!

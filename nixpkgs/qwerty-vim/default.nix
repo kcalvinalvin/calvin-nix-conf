@@ -1,10 +1,11 @@
 { pkgs }:
 
+with pkgs;
+
 let
-  my_plugins = import ./plugins.nix { inherit (pkgs) vimUtils fetchFromGitHub; };
+  my_plugins = import ./plugins.nix { inherit pkgs vimUtils fetchFromGitHub; };
 in
 
-with pkgs;
 
 neovim.override {
   vimAlias = true;
@@ -25,7 +26,8 @@ neovim.override {
       set hlsearch
       set history=700
       set laststatus=2
-      set signcolumn=yes
+      "set signcolumn=no
+      set signcolumn=yes:1
       set hidden
       set diffopt+=vertical
       set shell=bash
@@ -43,7 +45,8 @@ neovim.override {
       let g:deoplete#manual_complete = 1
 
       " Error and warning signs.
-      let g:ale_sign_error = '⤫'
+      "let g:ale_sign_error = '⤫'
+      let g:ale_sign_error = '✘'
       let g:ale_sign_warning = '�'
 
       " rust stuff
@@ -53,6 +56,7 @@ neovim.override {
       \   'go': ['gofmt', 'golangserver', 'gopls', 'govet'],
       \   'rust': ['analyzer', 'rustc', 'cargo'],
       \   'python': ['pyls'],
+      \   'cpp': ['g++'],
       \}
 
       "let g:ale_rust_rls_toolchain = 'stable'
@@ -69,6 +73,13 @@ neovim.override {
       \   'nix': ['nixpkgs-fmt', 'remove_trailing_lines', 'trim_whitespace']
       \}
       nmap gd :ALEGoToDefinition<CR>
+
+      " project specific import path
+      let g:ale_c_clang_options="-I/home/calvin/bitcoin-projects/cpp/core/bitcoin"
+      let g:ale_cpp_clang_options="-L/home/calvin/bitcoin-projects/cpp/core/bitcoin"
+
+      let g:ale_c_build_dir="/home/calvin/bitcoin-projects/cpp/core/bitcoin"
+      let g:ale_cpp_cc_options="-fsyntax-only -lpthread -I. -I./src -I./src/leveldb/include -I./leveldb/helpers/memenv -I./secp256k1/include -I./univalue/include -I./db4/include/ -I./src/config -DHAVE_CONFIG_H"
 
       let g:ale_fix_on_save = 1
       let g:ale_lint_on_text_changed = 'always'

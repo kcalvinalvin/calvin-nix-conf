@@ -11,7 +11,6 @@ in
 {
    programs.tmux = {
     enable = true;
-    #shortcut = "a"; # Use Ctrl-a
     baseIndex = 1; # Widows numbers begin with 1
     keyMode = "vi";
     customPaneNavigationAndResize = true;
@@ -31,13 +30,12 @@ in
       set -g @resurrect-strategy-nvim 'session'
 
       # -- general -------------------------------------------------------------------
+      bind-key l last-window
 
       set -g default-terminal "screen-256color" # colors!
       setw -g xterm-keys on
       set -s escape-time 0                      # fastest command sequences
       set -sg repeat-time 600                   # increase repeat timeout
-
-      set -g prefix2 C-a                        # GNU-Screen compatible prefix
 
       # uncomment to force vi-style key bindings
       # emacs is the default unless $EDITOR or $VISUAL contain 'vi'

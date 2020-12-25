@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # needed for nvidia. Ugh
@@ -32,14 +32,68 @@
     "net.ipv4.route.flush" = 1;
   };
 
-  networking.hostName = "bitcoin"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking = {
+    hostName = "bitcoin";
+    useDHCP = false;
+    interfaces.enp34s0.useDHCP = true;
+
+    #nameservers = [ "127.0.0.1" "::1" ];
+    resolvconf.enable = pkgs.lib.mkForce false;
+    #dhcpcd.extraConfig = "nohook resolv.conf";
+    networkmanager.dns = false;
+  };
+
+  services.resolved.enable = false;
+
+  services.dnscrypt-proxy2 = {
+    enable = true;
+    settings = {
+      ipv6_servers = true;
+      require_dnssec = true;
+      listen_addresses = [ "[::1]:51" ];
+
+      sources.public-resolvers = {
+        urls = [
+          "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+        ];
+        cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
+        minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+      };
+
+      # You can choose a specific set of servers from https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v3/public-resolvers.md
+      #server_names = [ "cloudflare" ];
+    };
+  };
+
+  services.dnsmasq = {
+    enable = true;
+    extraConfig = ''
+      interface=wg0
+    '';
+  };
+
+  environment.etc."resolv.conf".text = "::1";
+
+  systemd.services.dnscrypt-proxy2.serviceConfig = {
+    StateDirectory = "dnscrypt-proxy2";
+  };
+
+  # Forward loopback traffic on port 53 to dnscrypt-proxy2.
+  networking.firewall.extraCommands = ''
+    ip6tables --table nat --flush OUTPUT
+    ${lib.flip (lib.concatMapStringsSep "\n") [ "udp" "tcp" ] (proto: ''
+      ip6tables --table nat --append OUTPUT \
+        --protocol ${proto} --destination ::1 --destination-port 53 \
+        --jump REDIRECT --to-ports 51
+    '')}
+  '';
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp34s0.useDHCP = true;
+  #networking.useDHCP = false;
+  #networking.interfaces.enp34s0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -93,12 +147,6 @@
 
   programs.mosh.enable = true;
   programs.bcc.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;

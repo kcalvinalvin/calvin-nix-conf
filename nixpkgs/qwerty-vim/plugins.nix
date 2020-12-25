@@ -1,4 +1,4 @@
-{ vimUtils, fetchFromGitHub }:
+{ pkgs, vimUtils, fetchFromGitHub }:
 {
   vim-ripgrep = vimUtils.buildVimPluginFrom2Nix {
     name = "vim-ripgrep-2018-09-09";
@@ -129,7 +129,8 @@
       rev = "330b5352338f6c6db2a3484025334c42f80c98d9";
       sha256 = "12434nss4d60yffdd5d7f2h6mx7gxhw75mgk759anr061xs79s76";
     };
-    dependencies = [];
+    #dependencies = [pkgs.silver-searcher];
+    #dependencies = [];
   };
 
 }

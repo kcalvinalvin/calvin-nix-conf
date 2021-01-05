@@ -12,6 +12,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./wireguard.nix
+      ./nginx.nix
+      ./ddclient.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -76,7 +78,7 @@
   environment.etc."resolv.conf".text = "::1";
 
   systemd.services.dnscrypt-proxy2.serviceConfig = {
-    StateDirectory = "dnscrypt-proxy2";
+    StateDirectory = "dnscrypt-proxy";
   };
 
   # Forward loopback traffic on port 53 to dnscrypt-proxy2.

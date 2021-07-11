@@ -14,6 +14,7 @@
       ./wireguard.nix
       ./nginx.nix
       ./ddclient.nix
+      ./bitcoin.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -90,6 +91,12 @@
         --jump REDIRECT --to-ports 51
     '')}
   '';
+  # xrdp config
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "${pkgs.icewm}/bin/icewm";
+  };
+
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -113,9 +120,10 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   wget vim
-  # ];
+  #environment.systemPackages = with pkgs; [
+  #  wget
+  #  vim
+  #];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -142,10 +150,10 @@
   };
 
   # dynamic dns
-  services.ddclient = {
-    enable = true;
-    configFile = "/home/calvin/ddclient/ddclient.conf";
-  };
+  #services.ddclient = {
+  #  enable = true;
+  #  configFile = "/home/calvin/ddclient/ddclient.conf";
+  #};
 
   programs.mosh.enable = true;
   programs.bcc.enable = true;
@@ -162,7 +170,12 @@
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver = {
+    enable = true;
+    layout = "us";
+    xkbOptions = "eurosign:e";
+    videoDrivers = [ "nvidia" ];
+  };
 
   # could be per user but eh
   programs.fish = {
@@ -170,7 +183,6 @@
     shellAliases = {
       l = "ls";
       la = "ls -a";
-      vi = "nvim";
       vim = "nvim";
       googlePing = "ping 8.8.8.8";
       claer = "clear";

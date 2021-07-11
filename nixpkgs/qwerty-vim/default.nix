@@ -8,7 +8,8 @@ in
 
 
 neovim.override {
-  vimAlias = true;
+  vimAlias = false;
+  withNodeJs = true;
   configure = {
     customRC = ''
       syntax on
@@ -40,9 +41,9 @@ neovim.override {
       let g:airline_theme = 'molokai'
 
       " deoplete
-      let g:deoplete#enable_at_startup = 1
-      let g:deoplete#auto_complete = 0
-      let g:deoplete#manual_complete = 1
+      " let g:deoplete#enable_at_startup = 1
+      " let g:deoplete#auto_complete = 0
+      " let g:deoplete#manual_complete = 1
 
       " Error and warning signs.
       "let g:ale_sign_error = '⤫'
@@ -62,6 +63,7 @@ neovim.override {
       "let g:ale_rust_rls_toolchain = 'stable'
       "let g:ale_rust_rls_executable = '/home/calvin/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rls'
       "let g:ale_rust_cargo_use_clippy = 1
+      "let g:rust-analyzer.inlayHints.typeHints = 1
       let g:rustfmt_autosave = 1
       let g:rust_conceal = 1
 
@@ -73,6 +75,11 @@ neovim.override {
       \   'nix': ['nixpkgs-fmt', 'remove_trailing_lines', 'trim_whitespace']
       \}
       nmap gd :ALEGoToDefinition<CR>
+      "nmap gd <Plug>(coc-definition)
+      "nmap gy <Plug>(coc-type-definition)
+      "nmap gi <Plug>(coc-implementation)
+      "nmap gr <Plug>(coc-references)
+
 
       " project specific import path
       let g:ale_c_clang_options="-I/home/calvin/bitcoin-projects/cpp/core/bitcoin"
@@ -115,6 +122,56 @@ neovim.override {
       autocmd FileType go nmap <leader>r  <Plug>(go-run)
       autocmd FileType go nmap <leader>t  <Plug>(go-test)
       autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
+
+      "call coc#config('coc', {
+      "\ 'preferences': {
+      "\   'codeLens.enable': "true",
+      "\   'colorSupport': "true",
+      "\   'extensionUpdateCheck': "never",
+      "\   'formatOnSaveFiletypes': [ "go" ],
+      "\ },
+      "\ 'suggest': {
+      "\   'acceptSuggestionOnCommitCharacter': "true",
+      "\   'enablePreview': "true",
+      "\   'timeout': 2000,
+      "\   'triggerAfterInsertEnter': "true",
+      "\ },
+      "\ 'rust-client.disableRustup': "true",
+      "\})
+
+      "call coc#config('languageserver', {
+      "\ 'bash': {
+      "\   "command": "${pkgs.nodePackages.bash-language-server}/bin/bash-language-server",
+      "\   "args": ["start"],
+      "\   "filetypes": ["sh"],
+      "\   "rootPatterns": [".vim/", ".git/", ".hg/"],
+      "\   "ignoredRootPaths": ["~"],
+      "\ },
+      "'' + pkgs.lib.optionalString pkgs.stdenv.isLinux ''
+      "\ 'ccls': {
+      "\   "command": "${pkgs.ccls}/bin/ccls",
+      "\   "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+      "\   "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "\   "initializationOptions": {
+      "\      "cache": {
+      "\        "directory": ".ccls-cache",
+      "\      }
+      "\   },
+      "\ },
+      "'' + ''
+      "\ 'dockerfile': {
+      "\   "command": "${pkgs.nodePackages.dockerfile-language-server-nodejs}/bin/docker-langserver",
+      "\   "filetypes": ["dockerfile"],
+      "\   "rootPatterns": [".vim/", ".git/", ".hg/"],
+      "\   "args": ["--stdio"],
+      "\ },
+      "\ 'golang': {
+      "\   "command": "${gopls}",
+      "\   "args": [],
+      "\   "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "\   "filetypes": ["go"],
+      "\ },
+      "\})
     '';
 
     vam.knownPlugins = vimPlugins // my_plugins // { "tlib" = vimPlugins.tlib_vim; };
@@ -141,6 +198,8 @@ neovim.override {
         "vim-airline"
         "vim-airline-themes"
         "sleuth"
+        #"coc-nvim"
+        #"coc-rls"
         "vim-go"
         "vim-javascript"
         "yats-vim"

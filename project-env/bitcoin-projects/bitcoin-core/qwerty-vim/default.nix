@@ -84,9 +84,15 @@ neovim.override {
       \   "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
       \   "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
       \   "initializationOptions": {
-      \      "cache": {
-      \        "directory": ".ccls-cache",
-      \      }
+      \     "cache": {
+      \       "directory": ".ccls-cache",
+      \     },
+      \     "clang": {
+      \       "extraArgs": [
+      \         "-isystem",
+      \         "-I",
+      \       ],
+      \     },
       \   },
       \ },
       '' + ''

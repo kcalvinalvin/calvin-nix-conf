@@ -1,25 +1,41 @@
 let
-  # alias import <nixpkgs> {} to pkgs
   pkgs = import <nixpkgs> {};
 
-  # our custom vim for this direnv
-  myvim = import ./qwerty-vim {inherit pkgs; };
+  # Use llvm env.
+  stdenv = pkgs.llvmPackages_12.stdenv;
+
+  # Needed for linking. Otherwise nix will use gnu binutils and will result in
+  # a linking error.
+  bintools = pkgs.llvmPackages_12.bintools;
 in
 
-with pkgs; # nix syntax to declare that we want to use packages from nixpkgs
-
-stdenv.mkDerivation rec { # recursive
+with pkgs;
+stdenv.mkDerivation rec {
   name = "bitcoin";
   env = buildEnv { name = name; paths = buildInputs; };
+
+  # Everything that goes in here is wrapped so that the libraries for these
+  # are automatically linked.
   nativeBuildInputs = [
+    # ld, ar and other stuff.
+    bintools
+
+    # To generate compile_commands.json
+    bear
+
+    # For clangd linking.
+    clang-tools
+
+    # make stuff
     pkgconfig
     autoreconfHook
+    #ccache
   ];
-  buildInputs = [
-    myvim
 
-    openssl
+  # anything that you'd `apt install` would go here.
+  buildInputs = [
     db48
+    sqlite3
     boost
     zlib
     zeromq
@@ -28,18 +44,21 @@ stdenv.mkDerivation rec { # recursive
     utillinux
     python38Packages.pyzmq
   ];
+
+  # '$configureFlags' to access these in the shell.
+  # You can add more flags here.
   configureFlags = [
+    "--disable-bench"
+    "--disable-tests"
+    "--disable-wallet"
     "--with-boost-libdir=${boost.out}/lib"
   ];
-  checkInputs = [
-    rapidcheck
-    python3
-  ];
-  # nix-shell env as the derivation we built
-  # Point to the boost lib that we built
+
+  # These will be set in the shell.
+  #alias ar="${bintools.out}/bin/llvm-ar"
+  #export AR=llvm-ar
   shellHook = ''
-    export PATH="${myvim}/bin":$PATH
-    export NIX_SHELL_ENV=${name}
-    export USE_BOOST_LIBDIR="${boost.out}/lib"
+    # Just so that you can find the path for boost.  Not really needed.
+    export BOOST_LIBDIR="${boost.out}/lib"
   '';
 }

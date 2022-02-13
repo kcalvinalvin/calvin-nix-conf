@@ -1,7 +1,7 @@
-{ stdenv, config, pkgs, callPackage, ... }:
+{ stdenv, config, pkgs, ... }:
 
 let
-    qwerty-vim = import ./qwerty-vim {inherit pkgs; };
+    nvimsettings = import ./vim-settings;
 in
 
 {
@@ -10,11 +10,13 @@ in
   ];
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  programs.neovim = nvimsettings pkgs;
+
   home.packages = [
     pkgs.direnv
-    qwerty-vim
+    pkgs.rnix-lsp
   ];
-  services.lorri.enable = true;
+  #services.lorri.enable = true; # annoying since lorri keeps constantly re-evaluating
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

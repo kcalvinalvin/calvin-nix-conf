@@ -29,11 +29,15 @@ stdenv.mkDerivation rec {
     # make stuff
     pkgconfig
     autoreconfHook
-    #ccache
+
+    # TODO Not sure if this is needed in nativeBuildInputs. Maybe it can be
+    # in buildInputs.
+    ccache
   ];
 
   # anything that you'd `apt install` would go here.
   buildInputs = [
+    # bitcoin dependencies
     db48
     sqlite3
     boost
@@ -43,6 +47,10 @@ stdenv.mkDerivation rec {
     libevent
     utillinux
     python38Packages.pyzmq
+
+    # doxygen stuff
+    doxygen
+    graphviz
   ];
 
   # '$configureFlags' to access these in the shell.
@@ -55,8 +63,6 @@ stdenv.mkDerivation rec {
   ];
 
   # These will be set in the shell.
-  #alias ar="${bintools.out}/bin/llvm-ar"
-  #export AR=llvm-ar
   shellHook = ''
     # Just so that you can find the path for boost.  Not really needed.
     export BOOST_LIBDIR="${boost.out}/lib"

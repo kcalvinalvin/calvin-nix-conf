@@ -1,5 +1,6 @@
 -- Setup nvim-cmp.
 local cmp = require'cmp'
+local luasnip = require 'luasnip'
 
 cmp.setup({
   snippet = {
@@ -18,6 +19,24 @@ cmp.setup({
       c = cmp.mapping.close(),
     }),
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<C-n>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<C-p>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
@@ -55,6 +74,8 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'i', '<TAB>', '<cmd>vsnip#jumpable(1) ? <Plug>(vsnip-jump-next)<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'i', '<S-TAB>', '<cmd>vsnip#jumpable(-1) ? <Plug>(vsnip-jump-prev)<CR>', opts)
 end
 
 -- Clangd specific settings.
@@ -76,7 +97,7 @@ local clangd_flags = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'jedi', 'rust_analyzer', 'clangd', 'rnix', 'gopls'}
+local servers = { 'python-language-server', 'rust_analyzer', 'clangd', 'rnix', 'gopls'}
 for _, lsp in pairs(servers) do
   if lsp == 'clangd' then
     require('lspconfig')[lsp].setup {
@@ -88,7 +109,7 @@ for _, lsp in pairs(servers) do
       },
       capabilities = capabilities,
     }
-  else 
+  else
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
     flags = {

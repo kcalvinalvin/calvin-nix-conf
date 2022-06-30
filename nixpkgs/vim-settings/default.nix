@@ -45,11 +45,13 @@ in
       nvim-cmp
       cmp-vsnip
       cmp_nvim_lsp
+      vim-vsnip
+      luasnip
 
       # Languages
       # NOTE these can also be added in your shell.nix or flake.nix for a
       # per-project setup.
-      vim-nix 
+      vim-nix
       vim-go
 
       # Definition finder
@@ -78,6 +80,9 @@ in
 
       # Automatic shiftwidth/expandtab adjuster
       sleuth
+
+      # A root setter.  Useful when you're opening a subdirectory of a project.
+      vim-rooter
   ];
   extraConfig = ''
     luafile /home/calvin/calvin-nix-conf/nixpkgs/vim-settings/lua/settings.lua

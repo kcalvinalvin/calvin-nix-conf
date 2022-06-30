@@ -37,4 +37,15 @@ gset('go_highlight_types', 1)
 gset('go_fmt_command', 'goimports')
 gset('go_auto_type_info', 1)
 
+vim.cmd [[
+  autocmd FileType go nmap <leader>b <Plug>(go-build)
+  autocmd FileType go nmap <leader>r <Plug>(go-run)
+  autocmd FileType go nmap <leader>t <Plug>(go-test)
+  autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+  autocmd FileType go nmap <Leader>r <Plug>(go-callers)
+  autocmd FileType go nmap <Leader>f <Plug>(go-fmt)
+  autocmd FileType go nmap <Leader>l <Plug>(go-lint)
+  autocmd FileType go nmap <Leader>v <Plug>(go-vet)
+]]
+
 dofile("/home/calvin/calvin-nix-conf/nixpkgs/vim-settings/lua/lsp.lua")

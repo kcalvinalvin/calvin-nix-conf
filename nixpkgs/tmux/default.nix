@@ -24,6 +24,7 @@ in
     extraConfig = ''
       # cat << ►_◄ > /dev/null
       set-window-option -g mode-keys vi
+      set-option -g default-shell /run/current-system/sw/bin/fish
 
       set -g status-right "#{sysstat_cpu} | #{sysstat_mem} | #{sysstat_swap} | #{sysstat_loadavg} | #[fg=cyan]#(echo $USER)#[default]@#H"
 

@@ -47,6 +47,9 @@ in
       cmp_nvim_lsp
       vim-vsnip
       luasnip
+      vim-sensible
+      jedi-vim
+      pkgs.python39Packages.python-lsp-server
 
       # Languages
       # NOTE these can also be added in your shell.nix or flake.nix for a
@@ -85,6 +88,6 @@ in
       vim-rooter
   ];
   extraConfig = ''
-    luafile /home/calvin/calvin-nix-conf/nixpkgs/vim-settings/lua/settings.lua
+    luafile /Users/calvin/calvin-nix-conf/nixpkgs/vim-settings/lua/settings.lua
   '';
 }

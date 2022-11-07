@@ -46,6 +46,9 @@ vim.cmd [[
   autocmd FileType go nmap <Leader>f <Plug>(go-fmt)
   autocmd FileType go nmap <Leader>l <Plug>(go-lint)
   autocmd FileType go nmap <Leader>v <Plug>(go-vet)
+
+  au BufWritePre,FileWritePre *.go :GoFmt
+  au BufWritePre,FileWritePre *.go :GoImports
 ]]
 
-dofile("/home/calvin/calvin-nix-conf/nixpkgs/vim-settings/lua/lsp.lua")
+dofile("/Users/calvin/calvin-nix-conf/nixpkgs/vim-settings/lua/lsp.lua")

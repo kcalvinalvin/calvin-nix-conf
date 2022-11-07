@@ -97,7 +97,7 @@ local clangd_flags = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'python-language-server', 'rust_analyzer', 'clangd', 'rnix', 'gopls'}
+local servers = { 'pylsp', 'rust_analyzer', 'clangd', 'rnix', 'gopls'}
 for _, lsp in pairs(servers) do
   if lsp == 'clangd' then
     require('lspconfig')[lsp].setup {

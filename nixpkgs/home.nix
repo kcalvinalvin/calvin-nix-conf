@@ -15,6 +15,7 @@ in
   home.packages = [
     pkgs.direnv
     pkgs.rnix-lsp
+    pkgs.silver-searcher
   ];
   #services.lorri.enable = true; # annoying since lorri keeps constantly re-evaluating
 

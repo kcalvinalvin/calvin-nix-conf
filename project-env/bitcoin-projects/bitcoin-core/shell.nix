@@ -39,14 +39,13 @@ stdenv.mkDerivation rec {
   buildInputs = [
     # bitcoin dependencies
     db48
-    sqlite3
+    sqlite
     boost
     zlib
     zeromq
     miniupnpc
     libevent
     utillinux
-    python38Packages.pyzmq
 
     # doxygen stuff
     doxygen

@@ -46,7 +46,6 @@ stdenv.mkDerivation rec {
     miniupnpc
     libevent
     utillinux
-    python38Packages.pyzmq
 
     # doxygen stuff
     doxygen

@@ -39,7 +39,7 @@ stdenv.mkDerivation rec {
   buildInputs = [
     # bitcoin dependencies
     db48
-    sqlite3
+    sqlite
     boost
     zlib
     zeromq
